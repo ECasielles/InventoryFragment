@@ -1,0 +1,41 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="LoginTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorPrimaryLogin</item>
+    </style>
+
+    <!--
+        Defino el padre primero, heredando de Widget y haciendo referencia al SDK.
+        Puedo mantener la misma estructura y anular un atributo o no definirlo.
+        Para sobreescribir la configuración de Android ponemos android: delante.
+        Podemos no hacer toda la herencia completa de Widget, pero queda más claro.
+        Tomado de ../Android/Sdk/platforms/android-25/data/res/values
+    -->
+    <style name="Widget" parent="@android:style/Widget"/>
+    <style name="Widget.Button" parent="@android:style/Widget.Button"/>
+    <style name="Widget.Button.Transparent">
+        <item name="android:background">@null</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="LoginTheme.EditText" parent="LoginTheme">
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <!-- El color del checkbox cuando se activa pasa a ser colorAccent -->
+    <style name="Custom.Checkbox" parent="Theme.AppCompat">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/darker_gray</item>
+    </style>
+
+</resources>

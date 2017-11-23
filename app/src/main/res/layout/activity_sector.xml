@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.usuario.inventoryfragment.ui.sector.SectorActivity"
+    android:id="@+id/android.R.id.content"
+    >
+
+    <!--AppBarLayout controla el Scroll-->
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <!--Aquí podríamos haber usado include con Toolbar-->
+        <!--Al meter en un AppBarLayout aparece el atributo scrollFlags para que
+        se controlen los eventos scroll y su comportamiento respecto al RecyclerView-->
+        <!--Tiene dos flags distintos, scroll es que sólo se visualiza el primer elemento
+        y enterAlways es que se muestra cuando se desliza hacia abajo. Como Whatsapp.-->
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:titleTextColor="@android:color/white"
+            app:layout_scrollFlags="scroll|enterAlways"
+            />
+    </android.support.design.widget.AppBarLayout>
+
+    <!--Con app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    cuando el RecyclerView haga un Scroll, tendrá en cuenta que hay un AppBar se sincronizará-->
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rvwSector"
+        android:paddingTop="@dimen/list_padding_top"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_fab"
+        android:layout_marginEnd="@dimen/margin_fab"
+        android:layout_gravity="bottom|end"
+        app:srcCompat="@drawable/ic_action_add"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        />
+
+</android.support.design.widget.CoordinatorLayout>

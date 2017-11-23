@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="errorUserEmpty">No se admiten campos vacíos</string>
+    <string name="errorEmailEmpty">No se admiten campos vacíos</string>
+    <string name="errorPasswordEmpty">No se admiten campos vacíos</string>
+    <string name="errorPasswordLength">Campo de longitud no válida</string>
+    <string name="errorEmailFormat">Formato de email no válido</string>
+</resources>
