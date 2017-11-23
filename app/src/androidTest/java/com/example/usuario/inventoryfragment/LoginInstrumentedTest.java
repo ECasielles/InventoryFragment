@@ -63,7 +63,7 @@ public class LoginInstrumentedTest {
         onView(withId(R.id.edtUser)).perform(typeText("lourdes"), closeSoftKeyboard());
         onView(withId(R.id.edtPassword)).perform(typeText("lu"), closeSoftKeyboard());
         onView(withId(R.id.btnSignIn)).perform(click());
-        checkSnackBarDisplayByMessage(R.string.errorPasswordLength);
+        checkSnackBarDisplayByMessage(R.string.errorPassword);
     }
 
     //@StringRes realiza una inyección, es decir, que recoge el recurso

@@ -61,7 +61,7 @@ public class LoginViewImpl extends BaseActivity implements LoginView {
     }
     @Override
     public void setPasswordError() {
-        onError(R.string.errorPasswordLength);
+        onError(R.string.errorPassword);
     }
     /**
      * Destruye objetos inicializados

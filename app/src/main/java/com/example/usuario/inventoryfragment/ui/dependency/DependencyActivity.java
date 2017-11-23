@@ -1,71 +1,76 @@
 package com.example.usuario.inventoryfragment.ui.dependency;
 
-import android.app.ListActivity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-//Cuidado con qué librería usamos para Toolbar
-import android.support.v7.widget.Toolbar;
-
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.example.usuario.inventoryfragment.R;
-import com.example.usuario.inventoryfragment.adapter.DependencyAdapter;
-import com.example.usuario.inventoryfragment.data.db.model.Dependency;
+import com.example.usuario.inventoryfragment.ui.base.BaseActivity;
+
 
 /**
- * Contiene una lista que se maneja con un Adapter personalizado
- * que contiene distintas dependencias de tipo Dependency
+ * Actividad contenedora de las dependencias.
  *
- * @author Enrique Casielles
+ * @author Enrique Casielles Lapeira
  * @version 2.0
- * @see ListActivity
- * @see ArrayAdapter
- * @see Dependency
+ * @see com.example.usuario.inventoryfragment.ui.base.BaseActivity
+ * @see ListPresenter
  */
-//Las activity ya no heredarán de ListActivity, sino de ListFragment
-public class DependencyActivity extends AppCompatActivity {
+//Como la actividad es contenedor y nunca se pasa como parámetro
+//no implementará una interfaz
+public class DependencyActivity extends BaseActivity implements ListDependency.ListDependencyListener {
 
-    //private ArrayAdapter<Dependency> adapter;
-    private DependencyAdapter adapter;
-    private ListView listView;
-    private FloatingActionButton fab;
-    private CoordinatorLayout coordinatorLayout;
+    //La actividad inicializa cada fragment con su presentador
+    private ListDependency listDependency;
+    private ListPresenter listPresenter;
 
+    private AddEditDependency addeditDependency;
+    private AddEditPresenter addEditPresenter;
+
+    private Fragment detailDependency;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dependency);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //1.- Se crea la vista
+        listDependency = (ListDependency) fragmentManager.findFragmentByTag(ListDependency.TAG);
+        if (listDependency == null){
+            listDependency = (ListDependency) ListDependency.newInstance(null);
+            fragmentTransaction.add(android.R.id.content, listDependency, ListDependency.TAG);
+            fragmentTransaction.commit();
+        }
+        //2.- Se crea el presentador, y se le pasa en el constructor la vista correspondiente
+        listPresenter = new ListPresenter(listDependency);
 
-        adapter = new DependencyAdapter(this);
-        //Con android.R.id.list sigo pudiendo acceder al id genérico
-        listView = (ListView) findViewById(android.R.id.list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        //3.- Si fuera necesario, se asigan el presentador a su fragment
+        listDependency.setPresenter(listPresenter);
 
-        //Así asignamos la Toolbar a la vista
-        setSupportActionBar(toolbar);
-        adapter = new DependencyAdapter(this);
-        listView.setAdapter(adapter);
+    }
 
-        //Al pulsar sobre el botón se visualizará el SnackBar y Fab se desplazará
-        //hacia arriba.
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Al pulsar sobre el botón flotante se va a desplazar por el Snackbar
-                //Podríamos usar listView directamente en lugar de coordinator pero no se recomienda
-                //Snackbar.make(coordinatorLayout, "Ejemplo Snackbar", Snackbar.LENGTH_SHORT).show();
+    /**
+     * Método que se ejecuta cuando se crea una nueva Dependencia
+     */
+    @Override
+    public void addNewDependency() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //1.- Se crea la vista
+        addeditDependency = (AddEditDependency) fragmentManager.findFragmentByTag(AddEditDependency.TAG);
+        if (addeditDependency == null){
+            addeditDependency = AddEditDependency.newInstance(null);
+            fragmentTransaction.replace(android.R.id.content, addeditDependency, AddEditDependency.TAG);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+        //2.- Se crea el presentador, y se le pasa en el constructor la vista correspondiente
+        addEditPresenter = new AddEditPresenter(addeditDependency);
 
-                startActivity(new Intent(DependencyActivity.this, AddDependencyActivity.class));
-            }
-        });
-
+        //3.- Si fuera necesario, se asigan el presentador a su fragment
+        addeditDependency.setPresenter(addEditPresenter);
     }
 }

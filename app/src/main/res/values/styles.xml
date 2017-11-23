@@ -30,6 +30,7 @@
 
     <style name="LoginTheme.EditText" parent="LoginTheme">
         <item name="android:padding">10dp</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <!-- El color del checkbox cuando se activa pasa a ser colorAccent -->

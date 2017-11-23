@@ -16,7 +16,7 @@ public interface LoginInteractor {
     interface OnLoginFinishedListener {
         void onUserEmptyError();
         void onPasswordEmptyError();
-        void ontPasswordError();
+        void onPasswordError();
         void onSuccess();
     }
 }

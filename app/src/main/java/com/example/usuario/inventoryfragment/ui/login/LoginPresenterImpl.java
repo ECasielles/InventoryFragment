@@ -32,7 +32,7 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
         loginView.setPasswordEmptyError();
     }
     @Override
-    public void ontPasswordError() {
+    public void onPasswordError() {
         loginView.setPasswordError();
     }
     @Override

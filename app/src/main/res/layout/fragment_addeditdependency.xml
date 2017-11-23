@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.usuario.inventoryfragment.ui.dependency.AddDependencyActivity"
-    android:id="@+id/android.R.id.content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-    <!--FALTA PONERLE UN ICONO CHECK CUANDO SE EDITE-->
-    <!--Jaime ha puesto un menú aquí-->
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -116,11 +111,12 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:pressedTranslationZ="12dp"
-                app:srcCompat="@drawable/ic_action_add"
+                app:srcCompat="@drawable/fab_save"
                 />
 
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+
+</android.support.constraint.ConstraintLayout>

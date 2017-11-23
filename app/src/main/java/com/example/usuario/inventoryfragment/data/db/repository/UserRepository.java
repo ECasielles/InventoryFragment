@@ -70,10 +70,16 @@ public class UserRepository {
      * @return true si existe en la BD
      */
     public boolean isUserExists(User newuser) {
-        return true;
+        return users.contains(newuser);
     }
-    public boolean validateCredentials(String name, String password) {
-        User user = new User(0, name, password, null, null, false, false);
-        return users.get(users.indexOf(user)).getPassword().equals(password);
+    public boolean validateCredentials(String username, String password) {
+        boolean found = false;
+        int count = 0;
+        while(!found && count < users.size()) {
+            found = users.get(count).getName().equals(username) && users.get(count).getPassword().equals(password);
+            if(!found)
+                count++;
+        }
+        return found;
     }
 }
