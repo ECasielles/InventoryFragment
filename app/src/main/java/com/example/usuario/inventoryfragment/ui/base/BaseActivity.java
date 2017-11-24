@@ -30,4 +30,5 @@ public class BaseActivity extends AppCompatActivity {
         Snackbar.make(findViewById(android.R.id.content), getResources().getString(resourceId),
                 Snackbar.LENGTH_SHORT).show();
     }
+
 }

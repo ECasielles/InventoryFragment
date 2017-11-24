@@ -5,4 +5,8 @@
     <string name="errorPasswordEmpty">No se admiten campos vacíos</string>
     <string name="errorPassword">Contraseña incorrecta</string>
     <string name="errorEmailFormat">Formato de email no válido</string>
+    <string name="errorShortname">Nombre corto no válido</string>
+    <string name="errorDescription">Descripción no válida</string>
+    <string name="errorDependencyDuplicate">Duplicado</string>
+    <string name="errorName">Nombre no válido</string>
 </resources>

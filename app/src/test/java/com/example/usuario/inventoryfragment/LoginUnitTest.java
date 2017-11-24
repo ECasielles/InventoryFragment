@@ -49,9 +49,9 @@ public class LoginUnitTest {
      */
     @Test
     public void isUserExists_isCorrect() {
-        //Cuando se llame al método isUserExists, devuelve un valor predeterminado a mano
-        when(userRepository.isUserExists(users.get(0))).thenReturn(true);
-        assertTrue(userRepository.isUserExists(users.get(0)));
+        //Cuando se llame al método userExists, devuelve un valor predeterminado a mano
+        when(userRepository.userExists(users.get(0))).thenReturn(true);
+        assertTrue(userRepository.userExists(users.get(0)));
     }
     @Test
     public void getUsers_isCorrect() {

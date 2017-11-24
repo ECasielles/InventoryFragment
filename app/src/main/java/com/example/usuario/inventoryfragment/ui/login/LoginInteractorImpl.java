@@ -14,23 +14,19 @@ import com.example.usuario.inventoryfragment.utils.CommonUtils;
  * @see LoginInteractor.OnLoginFinishedListener
  *
  */
-public class LoginInteractorImpl {
+public class LoginInteractorImpl implements LoginInteractor {
 
-    //Las clases interactor no tienen contrato con nadie, se les pasa
-    //por parámetro una interfaz
     public void validateCredentials(String user, String password,
                                     LoginInteractor.OnLoginFinishedListener onLoginFinishedListener) {
         //Realiza todas las comprobaciones
-        /*
         if (TextUtils.isEmpty(password))
             onLoginFinishedListener.onPasswordEmptyError();
         else if (TextUtils.isEmpty(user))
             onLoginFinishedListener.onUserEmptyError();
         else if (!CommonUtils.isPasswordValid(password))
             onLoginFinishedListener.onPasswordError();
-        else
-        */
-        if (UserRepository.getInstance().validateCredentials(user, password))
+        else if (UserRepository.getInstance().validateCredentials(user, password))
             onLoginFinishedListener.onSuccess();
     }
+
 }

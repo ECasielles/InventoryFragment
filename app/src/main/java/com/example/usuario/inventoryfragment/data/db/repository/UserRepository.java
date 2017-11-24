@@ -66,11 +66,11 @@ public class UserRepository {
     }
     /**
      * Comprueba si un usuario existe en la base de datos
-     * @param newuser Usuario que se quiere buscar en la BD
+     * @param user Usuario que se quiere buscar en la BD
      * @return true si existe en la BD
      */
-    public boolean isUserExists(User newuser) {
-        return users.contains(newuser);
+    public boolean userExists(User user) {
+        return users.contains(user);
     }
     public boolean validateCredentials(String username, String password) {
         boolean found = false;

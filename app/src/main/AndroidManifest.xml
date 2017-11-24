@@ -17,19 +17,16 @@
             android:name="com.example.usuario.inventoryfragment.ui.login.LoginViewImpl"
             android:theme="@style/LoginTheme"
             >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name="com.example.usuario.inventoryfragment.ui.inventory.InventoryActivity"/>
         <activity android:name="com.example.usuario.inventoryfragment.ui.dashboard.DashboardActivity"/>
         <activity android:name="com.example.usuario.inventoryfragment.ui.product.ProductActivity"/>
         <activity android:name="com.example.usuario.inventoryfragment.ui.dependency.DependencyActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name="com.example.usuario.inventoryfragment.ui.sector.SectorActivity"/>
         <activity android:name="com.example.usuario.inventoryfragment.ui.settings.GeneralSettingsActivity"/>

@@ -11,7 +11,7 @@ package com.example.usuario.inventoryfragment.ui.login;
 
 public interface LoginInteractor {
 
-    void validateCredentials(String user, String password);
+    void validateCredentials(String user, String password, OnLoginFinishedListener onLoginFinishedListener);
 
     interface OnLoginFinishedListener {
         void onUserEmptyError();
