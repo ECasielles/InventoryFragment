@@ -8,6 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.example.usuario.inventoryfragment.R;
 import com.example.usuario.inventoryfragment.ui.base.BaseActivity;
+import com.example.usuario.inventoryfragment.ui.dependency.fragment.AddEditDependencyFragment;
+import com.example.usuario.inventoryfragment.ui.dependency.fragment.ListDependencyFragment;
+import com.example.usuario.inventoryfragment.ui.dependency.presenter.AddEditDependencyPresenter;
+import com.example.usuario.inventoryfragment.ui.dependency.presenter.ListDependencyPresenter;
 
 
 /**
@@ -16,18 +20,17 @@ import com.example.usuario.inventoryfragment.ui.base.BaseActivity;
  * @author Enrique Casielles Lapeira
  * @version 2.0
  * @see com.example.usuario.inventoryfragment.ui.base.BaseActivity
- * @see ListPresenter
  */
 //Como la actividad es contenedor y nunca se pasa como parámetro
 //no implementará una interfaz
-public class DependencyActivity extends BaseActivity implements ListDependency.ListDependencyListener {
-
+public class DependencyActivity extends BaseActivity implements ListDependencyFragment.ListDependencyListener,
+        AddEditDependencyFragment.AddEditDependencyListener {
     //La actividad inicializa cada fragment con su presentador
-    private ListDependency listDependency;
-    private ListPresenter listPresenter;
+    private ListDependencyFragment listDependencyFragment;
+    private ListDependencyPresenter listPresenter;
 
-    private AddEditDependency addeditDependency;
-    private AddEditPresenter addEditPresenter;
+    private AddEditDependencyFragment addeditDependencyFragment;
+    private AddEditDependencyPresenter addEditPresenter;
 
     private Fragment detailDependency;
 
@@ -38,17 +41,17 @@ public class DependencyActivity extends BaseActivity implements ListDependency.L
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //1.- Se crea la vista
-        listDependency = (ListDependency) fragmentManager.findFragmentByTag(ListDependency.TAG);
-        if (listDependency == null){
-            listDependency = (ListDependency) ListDependency.newInstance(null);
-            fragmentTransaction.add(android.R.id.content, listDependency, ListDependency.TAG);
+        listDependencyFragment = (ListDependencyFragment) fragmentManager.findFragmentByTag(ListDependencyFragment.TAG);
+        if (listDependencyFragment == null){
+            listDependencyFragment = (ListDependencyFragment) ListDependencyFragment.newInstance(null);
+            fragmentTransaction.add(android.R.id.content, listDependencyFragment, ListDependencyFragment.TAG);
             fragmentTransaction.commit();
         }
         //2.- Se crea el presentador, y se le pasa en el constructor la vista correspondiente
-        listPresenter = new ListPresenter(listDependency);
+        listPresenter = new ListDependencyPresenter(listDependencyFragment);
 
         //3.- Si fuera necesario, se asigan el presentador a su fragment
-        listDependency.setPresenter(listPresenter);
+        listDependencyFragment.setPresenter(listPresenter);
 
     }
 
@@ -60,17 +63,21 @@ public class DependencyActivity extends BaseActivity implements ListDependency.L
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //1.- Se crea la vista
-        addeditDependency = (AddEditDependency) fragmentManager.findFragmentByTag(AddEditDependency.TAG);
-        if (addeditDependency == null){
-            addeditDependency = AddEditDependency.newInstance(null);
-            fragmentTransaction.replace(android.R.id.content, addeditDependency, AddEditDependency.TAG);
+        addeditDependencyFragment = (AddEditDependencyFragment) fragmentManager.findFragmentByTag(AddEditDependencyFragment.TAG);
+        if (addeditDependencyFragment == null){
+            addeditDependencyFragment = AddEditDependencyFragment.newInstance(null);
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            fragmentTransaction.replace(android.R.id.content, addeditDependencyFragment, AddEditDependencyFragment.TAG).commit();
         }
         //2.- Se crea el presentador, y se le pasa en el constructor la vista correspondiente
-        addEditPresenter = new AddEditPresenter(addeditDependency);
+        addEditPresenter = new AddEditDependencyPresenter(addeditDependencyFragment);
 
         //3.- Si fuera necesario, se asigan el presentador a su fragment
-        addeditDependency.setPresenter(addEditPresenter);
+        addeditDependencyFragment.setPresenter(addEditPresenter);
+    }
+
+    @Override
+    public void listDependency() {
+        getSupportFragmentManager().popBackStack();
     }
 }

@@ -9,11 +9,12 @@ import android.support.v4.app.Fragment;
 
 public class BaseFragment extends Fragment {
 
-    //ProgressDialog
+/*    //ProgressDialog
 
     //private void showSnackbar(String message)
 
     public void showMessage(String error) {
 
-    }
+    }*/
+
 }

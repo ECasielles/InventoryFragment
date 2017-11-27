@@ -1,11 +1,9 @@
-package com.example.usuario.inventoryfragment.ui.dependency;
-
+package com.example.usuario.inventoryfragment.ui.dependency.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +13,24 @@ import com.example.usuario.inventoryfragment.R;
 import com.example.usuario.inventoryfragment.adapter.DependencyAdapter;
 import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.base.BaseView;
+import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependencyContract;
 
-public class ListDependency extends ListFragment implements BaseView, ListDependencyContract.View {
+public class ListDependencyFragment extends ListFragment implements BaseView, ListDependencyContract.View {
 
     public static final String TAG = "listdependency";
-    private BasePresenter presenter;
+    private ListDependencyContract.Presenter presenter;
     private ListDependencyListener callback;
 
-    interface ListDependencyListener {
+    public interface ListDependencyListener {
         void addNewDependency();
+    }
+
+    public static ListDependencyFragment newInstance(Bundle arguments) {
+        ListDependencyFragment listDependencyFragment = new ListDependencyFragment();
+        if(arguments != null) {
+            listDependencyFragment.setArguments(arguments);
+        }
+        return listDependencyFragment;
     }
 
     @Override
@@ -35,14 +42,6 @@ public class ListDependency extends ListFragment implements BaseView, ListDepend
             throw new ClassCastException(activity.toString() +
                     " must implement ListDependencyListener");
         }
-    }
-
-    public static ListDependency newInstance(Bundle arguments) {
-        ListDependency listDependency = new ListDependency();
-        if(arguments != null) {
-            listDependency.setArguments(arguments);
-        }
-        return listDependency;
     }
 
     @Nullable

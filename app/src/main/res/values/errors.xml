@@ -9,4 +9,8 @@
     <string name="errorDescription">Descripción no válida</string>
     <string name="errorDependencyDuplicate">Duplicado</string>
     <string name="errorName">Nombre no válido</string>
+    <string name="errorDependencyNameEmptyError">Error: Nombre vacío</string>
+    <string name="errorDependencyShortNameEmptyError">Error: Nombre corto vacío</string>
+    <string name="errorDependencyShortNameLengthError">Error: Tamaño no válido</string>
+    <string name="errorDependencyDescriptionEmptyError">Error: Dependencia vacía</string>
 </resources>

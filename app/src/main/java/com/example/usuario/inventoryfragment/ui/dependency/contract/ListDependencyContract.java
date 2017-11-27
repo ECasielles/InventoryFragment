@@ -1,12 +1,12 @@
-package com.example.usuario.inventoryfragment.ui.dependency;
+package com.example.usuario.inventoryfragment.ui.dependency.contract;
 
 import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.base.BaseView;
 
 /**
- * Created by usuario on 23/11/17.
+ * Aglutina distintas interfaces
  */
-interface DetailDependencyContract {
+public interface ListDependencyContract {
 
     interface View extends BaseView {
 

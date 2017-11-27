@@ -53,6 +53,20 @@ public class Dependency implements Comparable {
     public String toString() {
         return shortname;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Dependency dependency = (Dependency) obj;
+        boolean result = true;
+
+        if (name.equals(dependency.getName()))
+            result = false;
+        else if (shortname.equals(dependency.getShortname()))
+            result = false;
+
+        return result;
+    }
+
     /**
      * Implementando la interfaz Comparable.
      * @param o
@@ -63,6 +77,7 @@ public class Dependency implements Comparable {
     public int compareTo(@NonNull Object o) {
         return name.compareTo(((Dependency)o).name);
     }
+
 
     /**
      * Clase interna de Dependency que ordena la lista de dependencias

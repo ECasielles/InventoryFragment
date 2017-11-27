@@ -94,7 +94,7 @@ public class DependencyRepository {
      * Método que añade una dependencia
      * @param dependency Dependencia de clase Dependency
      */
-    private void addDependency(Dependency dependency) {
+    public void addDependency(Dependency dependency) {
         dependencies.add(dependency);
     }
     /**
@@ -107,6 +107,10 @@ public class DependencyRepository {
         //Si quiero que sort use Comparator, se lo paso por segundo parámetro
         Collections.sort(dependencies, new Dependency.DependencyOrderByShortName());
         return dependencies;
+    }
+
+    public boolean validateDependency(String name, String sortname) {
+        return true;
     }
 
 }

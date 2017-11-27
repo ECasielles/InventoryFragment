@@ -38,7 +38,7 @@
     <string name="edtName">Escriba el nombre</string>
     <string name="edtShortName">Escriba el nombre corto</string>
     <string name="edtDescription">Escriba una descripción</string>
-    <string name="addEditDependency">Editar dependencia</string>
+    <string name="addEditDependencyFragment">Editar dependencia</string>
 
 
 </resources>
