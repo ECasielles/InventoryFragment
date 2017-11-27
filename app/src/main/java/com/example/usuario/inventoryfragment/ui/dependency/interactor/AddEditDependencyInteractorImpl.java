@@ -1,18 +1,17 @@
-package com.example.usuario.inventoryfragment.ui.dependency;
+package com.example.usuario.inventoryfragment.ui.dependency.interactor;
 
 import com.example.usuario.inventoryfragment.data.db.model.Dependency;
 import com.example.usuario.inventoryfragment.data.db.repository.DependencyRepository;
-import com.example.usuario.inventoryfragment.ui.dependency.contract.AddEditDependencyContract;
 
 /**
- * Created by usuario on 24/11/17.
+ * Created by usuario on 27/11/17.
  */
 
-public class AddEditDependencyInteractor implements AddEditDependencyContract.Interactor {
+public class AddEditDependencyInteractorImpl implements AddEditDependencyInteractor {
 
     //Aquí habría que controlarlo con excepciones en lugar de elseif
     @Override
-    public void validateDependecy(String name, String shortname, String description, OnAddeditFinishedListener listener) {
+    public void validateDependency(String name, String shortname, String description, OnAddeditFinishedListener listener) {
         if (name.isEmpty())
             listener.onNameEmptyError();
         else if (shortname.isEmpty())
@@ -30,4 +29,5 @@ public class AddEditDependencyInteractor implements AddEditDependencyContract.In
         Dependency dependency = new Dependency(20, name, sortname, description);
         DependencyRepository.getInstance().addDependency(dependency);
     }
+
 }

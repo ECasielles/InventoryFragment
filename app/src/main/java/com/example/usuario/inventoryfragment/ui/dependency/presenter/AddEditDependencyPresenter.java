@@ -1,26 +1,27 @@
 package com.example.usuario.inventoryfragment.ui.dependency.presenter;
 
-import com.example.usuario.inventoryfragment.ui.dependency.AddEditDependencyInteractor;
+import com.example.usuario.inventoryfragment.ui.dependency.interactor.AddEditDependencyInteractor;
 import com.example.usuario.inventoryfragment.ui.dependency.contract.AddEditDependencyContract;
+import com.example.usuario.inventoryfragment.ui.dependency.interactor.AddEditDependencyInteractorImpl;
 
 /**
  * Created by usuario on 23/11/17.
  */
 
 public class AddEditDependencyPresenter implements AddEditDependencyContract.Presenter,
-        AddEditDependencyContract.Interactor.OnAddeditFinishedListener {
+        AddEditDependencyInteractor.OnAddeditFinishedListener {
     private AddEditDependencyContract.View view;
-    private AddEditDependencyContract.Interactor interactor;
+    private AddEditDependencyInteractorImpl interactor;
 
 
     public AddEditDependencyPresenter(AddEditDependencyContract.View view) {
         this.view = view;
-        this.interactor = new AddEditDependencyInteractor();
+        this.interactor = new AddEditDependencyInteractorImpl();
     }
 
     @Override
     public void saveDependency(String name, String sortname, String description) {
-        interactor.validateDependecy(name, sortname, description, this);
+        interactor.validateDependency(name, sortname, description, this);
     }
 
     @Override

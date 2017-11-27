@@ -14,15 +14,24 @@ import com.example.usuario.inventoryfragment.adapter.DependencyAdapter;
 import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.base.BaseView;
 import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependencyContract;
+import com.example.usuario.inventoryfragment.ui.dependency.interactor.ListDependencyInteractor;
+
+import java.util.List;
 
 public class ListDependencyFragment extends ListFragment implements BaseView, ListDependencyContract.View {
 
     public static final String TAG = "listdependency";
     private ListDependencyContract.Presenter presenter;
     private ListDependencyListener callback;
+    private DependencyAdapter adapter;
+
 
     public interface ListDependencyListener {
         void addNewDependency();
+    }
+
+    public ListDependencyFragment(){
+        setRetainInstance(true);
     }
 
     public static ListDependencyFragment newInstance(Bundle arguments) {
@@ -44,10 +53,19 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //Asignamos aquí el adaptador porque en el constructor no podemos porque
+        //aún no está creada la activity
+        this.adapter = new DependencyAdapter(getActivity());
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_listdependency, container, false);
+
         //Como se encuentra en el Fragment usamos rootView
         FloatingActionButton floatingActionButton = rootView.findViewById(R.id.fab);
         //Si el floatingActionButton se encontrara en el xml de la Activity
@@ -58,18 +76,42 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
                 callback.addNewDependency();
             }
         });
+        presenter.loadDependencies();
+
         return rootView;
     }
+
+    /**
+     * Asigna el adapter sin datos a la vista.
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setListAdapter(new DependencyAdapter(getActivity()));
+        //No se puede añadir el adaptador en el onCreateView porque aún no existe la vista
+        setListAdapter(adapter);
     }
 
-
+    /**
+     * Asigna el presentador a la vista
+     * @param presenter
+     */
     @Override
     public void setPresenter(BasePresenter presenter) {
         this.presenter = (ListDependencyContract.Presenter) presenter;
+    }
+
+    /**
+     * Este método es el que usa la vista para cargar los datos del repositorio
+     * a través del esquema MVP
+     * @param listDependencyInteractor
+     */
+    @Override
+    public void showDependency(List listDependencyInteractor) {
+        //Limpio el adaptador por si hubiera datos anteriores
+        adapter.clear();
+        adapter.addAll(listDependencyInteractor);
     }
 
 }

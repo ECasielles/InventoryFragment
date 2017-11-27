@@ -27,7 +27,6 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
     private FloatingActionButton fab;
     private TextInputLayout tilName, tilShortName, tilDescription;
     private EditText edtName, edtShortName, edtDescription;
-    //falta callback
 
     public interface AddEditDependencyListener {
         void listDependency();

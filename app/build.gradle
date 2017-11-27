@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.example.usuario.inventory"
+        applicationId "com.example.usuario.inventoryfragment"
         minSdkVersion 18
         targetSdkVersion 22
         versionCode 1
