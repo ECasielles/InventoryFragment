@@ -1,5 +1,7 @@
 package com.example.usuario.inventoryfragment.data.db.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.util.Comparator;
@@ -11,11 +13,12 @@ import java.util.Comparator;
  * @version 2.0
  * @see java.lang.Comparable
  */
-public class Dependency implements Comparable {
+public class Dependency implements Comparable, Parcelable {
     private int _ID;
     private String name;
     private String shortname;
     private String description;
+    public static String TAG = "Dependency";
 
     public Dependency(int _ID, String name, String shortname, String description) {
         this._ID = _ID;
@@ -23,6 +26,26 @@ public class Dependency implements Comparable {
         this.shortname = shortname;
         this.description = description;
     }
+
+    //CREATOR DEL PARCELABLE
+    protected Dependency(Parcel in) {
+        _ID = in.readInt();
+        name = in.readString();
+        shortname = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<Dependency> CREATOR = new Creator<Dependency>() {
+        @Override
+        public Dependency createFromParcel(Parcel in) {
+            return new Dependency(in);
+        }
+
+        @Override
+        public Dependency[] newArray(int size) {
+            return new Dependency[size];
+        }
+    };
 
     public int get_ID() {
         return _ID;
@@ -59,9 +82,9 @@ public class Dependency implements Comparable {
         Dependency dependency = (Dependency) obj;
         boolean result = true;
 
-        if (name.equals(dependency.getName()))
+        if (!name.equals(dependency.getName()))
             result = false;
-        else if (shortname.equals(dependency.getShortname()))
+        else if (!shortname.equals(dependency.getShortname()))
             result = false;
 
         return result;
@@ -76,6 +99,19 @@ public class Dependency implements Comparable {
     @Override
     public int compareTo(@NonNull Object o) {
         return name.compareTo(((Dependency)o).name);
+    }
+
+    //IMPLEMENTANDO PARCELABLE
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(_ID);
+        parcel.writeString(name);
+        parcel.writeString(shortname);
+        parcel.writeString(description);
     }
 
 

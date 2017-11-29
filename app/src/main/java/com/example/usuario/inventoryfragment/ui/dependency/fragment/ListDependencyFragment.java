@@ -2,32 +2,35 @@ package com.example.usuario.inventoryfragment.ui.dependency.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.usuario.inventoryfragment.R;
 import com.example.usuario.inventoryfragment.adapter.DependencyAdapter;
+import com.example.usuario.inventoryfragment.data.db.model.Dependency;
 import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.base.BaseView;
 import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependencyContract;
-import com.example.usuario.inventoryfragment.ui.dependency.interactor.ListDependencyInteractor;
 
 import java.util.List;
 
 public class ListDependencyFragment extends ListFragment implements BaseView, ListDependencyContract.View {
 
-    public static final String TAG = "listdependency";
+    public static final String TAG = "ListDependencyFragment";
     private ListDependencyContract.Presenter presenter;
     private ListDependencyListener callback;
     private DependencyAdapter adapter;
+    FloatingActionButton fab;
 
 
     public interface ListDependencyListener {
-        void addNewDependency();
+        void addNewDependency(Bundle bundle);
     }
 
     public ListDependencyFragment(){
@@ -67,15 +70,7 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         View rootView = inflater.inflate(R.layout.fragment_listdependency, container, false);
 
         //Como se encuentra en el Fragment usamos rootView
-        FloatingActionButton floatingActionButton = rootView.findViewById(R.id.fab);
-        //Si el floatingActionButton se encontrara en el xml de la Activity
-        //FloatingActionButton floatingActionButton = (FloatingActionButton)getActivity().findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callback.addNewDependency();
-            }
-        });
+        fab = rootView.findViewById(R.id.fab);
         presenter.loadDependencies();
 
         return rootView;
@@ -91,6 +86,34 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         super.onViewCreated(view, savedInstanceState);
         //No se puede añadir el adaptador en el onCreateView porque aún no existe la vista
         setListAdapter(adapter);
+
+        //IMPORTANTE: CAE SEGURO
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            /**
+             * @param adapterView Lista que hereda de AdapterView
+             * @param view Vista que contiene el layout elemento
+             * @param position Posición en la lista
+             * @param id Id del cursor
+             * @return
+             */
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Parcelable parcel = (Parcelable) adapterView.getItemAtPosition(position);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Dependency.TAG, parcel);
+                callback.addNewDependency(bundle);
+                return false;
+            }
+        });
+
+        //Si el fab se encontrara en el xml de la Activity
+        //FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.addNewDependency(null);
+            }
+        });
     }
 
     /**

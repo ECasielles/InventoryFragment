@@ -11,12 +11,12 @@ import android.os.Parcelable;
  * @see Parcelable
  */
 public class Sector implements Parcelable {
-
     int _ID;
     String name, shortname, description;
     int dependencyId;
     boolean enabled = true;     //Habilitados por defecto
     boolean sectorDefault = true;    //Se visualiza un TextView en el sector por defecto
+    public static String TAG = "Sector";
 
     public Sector(int ID, String name, String shortname, String description, int dependencyId, boolean enabled, boolean sectorDefault) {
         this._ID = ID;

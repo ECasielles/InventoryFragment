@@ -1,5 +1,6 @@
 package com.example.usuario.inventoryfragment.ui.dependency.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,18 +16,21 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.usuario.inventoryfragment.R;
+import com.example.usuario.inventoryfragment.data.db.model.Dependency;
 import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.dependency.contract.AddEditDependencyContract;
+import com.example.usuario.inventoryfragment.utils.AddEdit;
 
 
 public class AddEditDependencyFragment extends Fragment implements AddEditDependencyContract.View {
 
-    public static final String TAG = "addeditdependency";
+    public static final String TAG = "AddEditDependencyFragment";
     private AddEditDependencyContract.Presenter presenter;
     private AddEditDependencyListener mCallback;
     private FloatingActionButton fab;
     private TextInputLayout tilName, tilShortName, tilDescription;
     private EditText edtName, edtShortName, edtDescription;
+    private AddEdit addEditMode;
 
     public interface AddEditDependencyListener {
         void listDependency();
@@ -43,7 +47,6 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         try {
             mCallback = (AddEditDependencyListener) activity;
         } catch (ClassCastException e) {
@@ -51,6 +54,7 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
         }
     }
 
+    @SuppressLint("LongLogTag")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -63,7 +67,6 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
         fab = rootView.findViewById(R.id.fab);
         edtName = rootView.findViewById(R.id.edtName);
         edtName.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -118,25 +121,29 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
             }
         });
 
-
-        if(getArguments() != null) {
-        }
+        //Por defecto está en ADD_MODE
+        addEditMode = new AddEdit();
+        if(getArguments() != null)
+            addEditMode.setMode(AddEdit.EDIT_MODE);
 
         Log.d(TAG, "onCreateView");
         return rootView;
     }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.saveDependency(
-                        tilName.getEditText().getText().toString(),
-                        tilShortName.getEditText().getText().toString(),
-                        tilDescription.getEditText().getText().toString());
+                if(addEditMode.getMode() == AddEdit.ADD_MODE)
+                    presenter.saveDependency(
+                            tilName.getEditText().getText().toString(),
+                            tilShortName.getEditText().getText().toString(),
+                            tilDescription.getEditText().getText().toString());
+                if(addEditMode.getMode() == AddEdit.EDIT_MODE){
+                    Dependency dependency = getArguments().getParcelable(Dependency.TAG);
+                    presenter.editDependency(dependency, tilDescription.getEditText().getText().toString());
+                }
             }
         });
     }
@@ -145,7 +152,6 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
     public void setPresenter(BasePresenter presenter) {
         this.presenter = (AddEditDependencyContract.Presenter) presenter;
     }
-
     @Override
     public void navigateToListDependency() {
         mCallback.listDependency();
@@ -155,22 +161,18 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
     public void setNameEmptyError() {
         tilName.setError(getResources().getString(R.string.errorDependencyNameEmptyError));
     }
-
     @Override
     public void setShortNameEmptyError() {
         tilShortName.setError(getResources().getString(R.string.errorDependencyShortNameEmptyError));
     }
-
     @Override
     public void setShortNameLengthError() {
         tilShortName.setError(getResources().getString(R.string.errorDependencyShortNameLengthError));
     }
-
     @Override
     public void setDescriptionEmptyError() {
         tilDescription.setError(getResources().getString(R.string.errorDependencyDescriptionEmptyError));
     }
-
     @Override
     public void setValidateDependencyError() {
 

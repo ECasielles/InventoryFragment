@@ -1,5 +1,6 @@
 package com.example.usuario.inventoryfragment.ui.dependency.presenter;
 
+import com.example.usuario.inventoryfragment.data.db.model.Dependency;
 import com.example.usuario.inventoryfragment.ui.dependency.interactor.AddEditDependencyInteractor;
 import com.example.usuario.inventoryfragment.ui.dependency.contract.AddEditDependencyContract;
 import com.example.usuario.inventoryfragment.ui.dependency.interactor.AddEditDependencyInteractorImpl;
@@ -9,7 +10,7 @@ import com.example.usuario.inventoryfragment.ui.dependency.interactor.AddEditDep
  */
 
 public class AddEditDependencyPresenter implements AddEditDependencyContract.Presenter,
-        AddEditDependencyInteractor.OnAddeditFinishedListener {
+        AddEditDependencyInteractor.OnAddEditFinishedListener {
     private AddEditDependencyContract.View view;
     private AddEditDependencyInteractorImpl interactor;
 
@@ -20,34 +21,31 @@ public class AddEditDependencyPresenter implements AddEditDependencyContract.Pre
     }
 
     @Override
-    public void saveDependency(String name, String sortname, String description) {
-        interactor.validateDependency(name, sortname, description, this);
+    public void saveDependency(String name, String shortname, String description) {
+        interactor.validateDependency(name, shortname, description, this);
+    }
+
+    @Override
+    public void editDependency(Dependency dependency, String description) {
+        interactor.editDependency(dependency, description, this);
     }
 
     @Override
     public void onNameEmptyError() {
         view.setNameEmptyError();
     }
-
-
     @Override
     public void onShortNameEmptyError() {
         view.setShortNameEmptyError();
     }
-
-
     @Override
     public void onShortNameLengthError() {
         view.setShortNameLengthError();
     }
-
-
     @Override
     public void onDescriptionEmptyError() {
         view.setDescriptionEmptyError();
     }
-
-
     @Override
     public void onSuccess(String name, String shortname, String description) {
         interactor.addDependency(name, shortname, description);

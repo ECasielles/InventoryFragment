@@ -95,6 +95,7 @@ public class DependencyRepository {
      * @param dependency Dependencia de clase Dependency
      */
     public void addDependency(Dependency dependency) {
+        dependency.set_ID(dependencies.size());
         dependencies.add(dependency);
     }
     /**
@@ -109,8 +110,20 @@ public class DependencyRepository {
         return dependencies;
     }
 
-    public boolean validateDependency(String name, String sortname) {
-        return true;
+    public void editDependency(Dependency dependency, String description) {
+        int index = dependencies.indexOf(dependency);
+        dependency.setDescription(description);
+        dependencies.set(index, dependency);
     }
 
+    public boolean exists(String name, String shortname) {
+        boolean found = false;
+        for (int i = 0; i < dependencies.size() && !found; i++) {
+            if(dependencies.get(i).getName().equals(name) &&
+                    dependencies.get(i).getShortname().equals(shortname)) {
+                found = true;
+            }
+        }
+        return found;
+    }
 }

@@ -59,13 +59,13 @@ public class DependencyActivity extends BaseActivity implements ListDependencyFr
      * Método que se ejecuta cuando se crea una nueva Dependencia
      */
     @Override
-    public void addNewDependency() {
+    public void addNewDependency(Bundle bundle) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //1.- Se crea la vista
         addeditDependencyFragment = (AddEditDependencyFragment) fragmentManager.findFragmentByTag(AddEditDependencyFragment.TAG);
         if (addeditDependencyFragment == null){
-            addeditDependencyFragment = AddEditDependencyFragment.newInstance(null);
+            addeditDependencyFragment = AddEditDependencyFragment.newInstance(bundle);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.replace(android.R.id.content, addeditDependencyFragment, AddEditDependencyFragment.TAG).commit();
         }

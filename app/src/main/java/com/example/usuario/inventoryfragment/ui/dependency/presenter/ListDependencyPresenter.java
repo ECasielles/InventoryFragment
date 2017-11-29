@@ -24,7 +24,6 @@ public class ListDependencyPresenter implements ListDependencyContract.Presenter
 
     /**
      * Carga los datos
-     * @param dependencies
      */
     @Override
     public void loadDependencies() {

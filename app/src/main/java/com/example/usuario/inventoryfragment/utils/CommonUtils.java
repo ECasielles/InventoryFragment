@@ -25,10 +25,10 @@ public final class CommonUtils {
          (?=.*[0-9])       # Al menos un dígito
          (?=.*[a-z])       # Al menos una minúscula
          (?=.*[A-Z])       # Al menos una mayúscula
-         .{6,}             # Longitud mínima 6
+         .{6,20}           # Longitud mínima 6 y máxima 20
          $                 # Fin de la cadena
          */
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$";
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,20}$";
         pattern = Pattern.compile(PASSWORD_PATTERN);
         matcher = pattern.matcher(password);
         return matcher.matches();
