@@ -39,6 +39,12 @@
     <string name="edtShortName">Escriba el nombre corto</string>
     <string name="edtDescription">Escriba una descripción</string>
     <string name="addEditDependencyFragment">Editar dependencia</string>
+    <string name="listDependencyFragmentContextTitle">Opciones Lista Dependencia</string>
+
+    <!--MENU-->
+    <string name="fragment_listdependency_delete">Eliminar dependencia</string>
+    <string name="btnOk">Confirmar</string>
+    <string name="btnCancel">Cancelar</string>
 
 
 </resources>

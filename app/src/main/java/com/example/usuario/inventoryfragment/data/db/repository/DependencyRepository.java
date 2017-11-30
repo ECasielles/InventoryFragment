@@ -126,4 +126,8 @@ public class DependencyRepository {
         }
         return found;
     }
+
+    public boolean deleteDependency(Dependency dependency) {
+        return dependencies.remove(dependency);
+    }
 }

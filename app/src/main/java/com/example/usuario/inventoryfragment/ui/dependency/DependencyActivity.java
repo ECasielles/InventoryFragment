@@ -43,7 +43,7 @@ public class DependencyActivity extends BaseActivity implements ListDependencyFr
         //1.- Se crea la vista
         listDependencyFragment = (ListDependencyFragment) fragmentManager.findFragmentByTag(ListDependencyFragment.TAG);
         if (listDependencyFragment == null){
-            listDependencyFragment = (ListDependencyFragment) ListDependencyFragment.newInstance(null);
+            listDependencyFragment = ListDependencyFragment.newInstance(null);
             fragmentTransaction.add(android.R.id.content, listDependencyFragment, ListDependencyFragment.TAG);
             fragmentTransaction.commit();
         }
@@ -65,7 +65,10 @@ public class DependencyActivity extends BaseActivity implements ListDependencyFr
         //1.- Se crea la vista
         addeditDependencyFragment = (AddEditDependencyFragment) fragmentManager.findFragmentByTag(AddEditDependencyFragment.TAG);
         if (addeditDependencyFragment == null){
-            addeditDependencyFragment = AddEditDependencyFragment.newInstance(bundle);
+            if(bundle != null)
+                addeditDependencyFragment = AddEditDependencyFragment.newInstance(bundle);
+            else
+                addeditDependencyFragment = AddEditDependencyFragment.newInstance(null);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.replace(android.R.id.content, addeditDependencyFragment, AddEditDependencyFragment.TAG).commit();
         }

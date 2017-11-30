@@ -18,6 +18,8 @@ public interface ListDependencyContract {
 
     interface Presenter extends BasePresenter {
         void loadDependencies();
+
+        void deleteItem(Dependency parcelable);
     }
 
 }

@@ -14,4 +14,9 @@ public class DetailDependencyPresenter implements DetailDependencyContract.Prese
     }
 
 
+    @Override
+    public void onDestroy() {
+        view = null;
+        //interactor = null;
+    }
 }

@@ -123,10 +123,16 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
 
         //Por defecto está en ADD_MODE
         addEditMode = new AddEdit();
-        if(getArguments() != null)
+        if(getArguments() != null) {
             addEditMode.setMode(AddEdit.EDIT_MODE);
+            Dependency dependency = getArguments().getParcelable(Dependency.TAG);
+            tilName.getEditText().setText(dependency.getName());
+            tilShortName.getEditText().setText(dependency.getShortname());
+            tilDescription.getEditText().setText(dependency.getDescription());
+            tilName.setEnabled(false);
+            tilShortName.setEnabled(false);
+        }
 
-        Log.d(TAG, "onCreateView");
         return rootView;
     }
     @Override

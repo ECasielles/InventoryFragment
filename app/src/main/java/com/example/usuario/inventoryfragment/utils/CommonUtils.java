@@ -1,5 +1,16 @@
 package com.example.usuario.inventoryfragment.utils;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+
+import com.example.usuario.inventoryfragment.R;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,5 +44,52 @@ public final class CommonUtils {
         matcher = pattern.matcher(password);
         return matcher.matches();
     }
+
+    public static ProgressDialog showLoadDialog(Context context){
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.show();
+        if(progressDialog.getWindow() != null) {
+            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        return progressDialog;
+    }
+
+    /*
+    //Claro caso de extraer una clase, con función e identidad propias
+    interface ConfirmationDialog {
+        static final String MESSAGE = "Message";
+        static final String TITLE = "Title";
+    }
+
+    *//**
+     * Cuadro de diálogo genérico que sirve para cualquier Fragment o Presenter.
+     * @param bundle
+     * @param context
+     * @return
+     *//*
+    public static Dialog showConfirmDialog(Bundle bundle, Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(bundle.getString(CommonDialog.ConfirmationDialog.MESSAGE))
+                .setTitle(bundle.getString(CommonDialog.ConfirmationDialog.TITLE))
+                .setPositiveButton(R.string.btnOk, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                })
+                .setNegativeButton(R.string.btnCancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Usamos cancel en lugar de dismiss, porque dismiss no elimina
+                        dialogInterface.cancel();
+                    }
+                });
+        return builder.create();
+    }*/
+
 
 }

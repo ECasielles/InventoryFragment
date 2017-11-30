@@ -52,4 +52,12 @@ public class AddEditDependencyPresenter implements AddEditDependencyContract.Pre
         view.navigateToListDependency();
     }
 
+    /**
+     * Se llama cuando se destruya la Activity
+     */
+    @Override
+    public void onDestroy() {
+        view = null;
+        interactor = null;
+    }
 }
