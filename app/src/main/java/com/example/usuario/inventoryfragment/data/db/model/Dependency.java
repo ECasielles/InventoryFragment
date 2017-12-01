@@ -20,6 +20,33 @@ public class Dependency implements Comparable, Parcelable {
     private String description;
     public static String TAG = "Dependency";
 
+    //Forma alternativa de declarar los Comparator
+    public static final Comparator<Dependency> COMPARATOR_ID = new Comparator<Dependency>() {
+        @Override
+        public int compare(Dependency dependency, Dependency dependency2) {
+            return dependency.get_ID() > dependency2.get_ID() ? 1: -1;
+        }
+    };
+    public static final Comparator<Dependency> COMPARATOR_ID_DESC = new Comparator<Dependency>() {
+        @Override
+        public int compare(Dependency dependency, Dependency dependency2) {
+            return dependency.get_ID() < dependency2.get_ID() ? 1: -1;
+        }
+    };
+    public static final Comparator<Dependency> COMPARATOR_NAME = new Comparator<Dependency>() {
+        @Override
+        public int compare(Dependency dependency, Dependency dependency2) {
+            return dependency.getName().compareToIgnoreCase(dependency2.getName());
+        }
+    };
+    public static final Comparator<Dependency> COMPARATOR_NAME_DESC = new Comparator<Dependency>() {
+        @Override
+        public int compare(Dependency dependency, Dependency dependency2) {
+            return -1 * dependency.getName().compareToIgnoreCase(dependency2.getName());
+        }
+    };
+
+
     public Dependency(int _ID, String name, String shortname, String description) {
         this._ID = _ID;
         this.name = name;
@@ -113,7 +140,6 @@ public class Dependency implements Comparable, Parcelable {
         parcel.writeString(shortname);
         parcel.writeString(description);
     }
-
 
     /**
      * Clase interna de Dependency que ordena la lista de dependencias

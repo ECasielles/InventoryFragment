@@ -5,6 +5,7 @@ import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.base.BaseView;
 import com.example.usuario.inventoryfragment.ui.dependency.interactor.ListDependencyInteractor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,12 +15,16 @@ public interface ListDependencyContract {
 
     interface View extends BaseView {
         void showDependency(List listDependencyInteractor);
+        void showDeletedMessage();
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BasePresenter, Serializable {
         void loadDependencies();
 
         void deleteItem(Dependency parcelable);
+
+        @Override
+        void onDestroy();
     }
 
 }

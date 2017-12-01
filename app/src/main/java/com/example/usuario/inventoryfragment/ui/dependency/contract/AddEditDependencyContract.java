@@ -5,6 +5,8 @@ import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.base.BaseView;
 import com.example.usuario.inventoryfragment.utils.AddEdit;
 
+import java.io.Serializable;
+
 /**
  * Created by usuario on 23/11/17.
  */
@@ -20,12 +22,14 @@ public interface AddEditDependencyContract {
         void setValidateDependencyError();
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BasePresenter, Serializable {
 
         void saveDependency(String name, String shortName, String description);
 
         void editDependency(Dependency dependency, String description);
 
+        @Override
+        void onDestroy();
     }
 
 }

@@ -2,24 +2,23 @@ package com.example.usuario.inventoryfragment.ui.dependency.fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.example.usuario.inventoryfragment.R;
 import com.example.usuario.inventoryfragment.adapter.DependencyAdapter;
 import com.example.usuario.inventoryfragment.data.db.model.Dependency;
+import com.example.usuario.inventoryfragment.ui.base.BaseActivity;
 import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.base.BaseView;
 import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependencyContract;
@@ -36,15 +35,15 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
     private DependencyAdapter adapter;
     FloatingActionButton fab;
 
-
+    //INTERFAZ COMUNICACION CON LA ACTIVITY
     public interface ListDependencyListener {
         void addNewDependency(Bundle bundle);
     }
 
+    //CONSTRUCTORES
     public ListDependencyFragment(){
         setRetainInstance(true);
     }
-
     public static ListDependencyFragment newInstance(Bundle arguments) {
         ListDependencyFragment listDependencyFragment = new ListDependencyFragment();
         if(arguments != null) {
@@ -53,6 +52,7 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         return listDependencyFragment;
     }
 
+    //CICLO DE VIDA: INICIO
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -63,15 +63,16 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
                     " must implement ListDependencyListener");
         }
     }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Asignamos aquí el adaptador porque en el constructor no podemos porque
         //aún no está creada la activity
         this.adapter = new DependencyAdapter(getActivity());
+        //Si esta vista guardase el presenter...
+        //this.presenter = new ListPresenter(this);
+        //setRetainInstance(true);
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,7 +83,6 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         presenter.loadDependencies();
         return rootView;
     }
-
     /**
      * Asigna el adapter sin datos a la vista.
      * @param view
@@ -127,8 +127,23 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         });
     }
 
-    //FALTA ONSAVEINSTANCE PARA GUARDAR EL PRESENTER DURANTE UN CAMBIO DE CONFIGURACIÓN
-
+    //GUARDAR EL ESTADO
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(ListDependencyPresenter.TAG, presenter);
+    }
+    /**
+     * Recupera el presenter cuando la vista se restaura tras un cambio de configuración.
+     * @param savedInstanceState
+     */
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        //Podría hacer que esta vista cree el Presenter y que no lo maneje la Activity
+        //Se podría recuperarlo también en el onCreateView
+        this.presenter = (ListDependencyContract.Presenter) savedInstanceState.get(ListDependencyPresenter.TAG);
+    }
 
     //MENU CONTEXTUAL
     /**
@@ -151,25 +166,25 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
      */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo adapterContextMenuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Dependency dependency = (Dependency) getListView().getItemAtPosition(adapterContextMenuInfo.position);
-
         switch (item.getItemId()) {
             case R.id.action_fragment_listdependency_delete:
+                //Recupero el objeto
+                AdapterView.AdapterContextMenuInfo adapterContextMenuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                Dependency dependency = (Dependency) getListView().getItemAtPosition(adapterContextMenuInfo.position);
+
                 //Cuadro de diálogo de confirmación con patrón Builder
                 Bundle bundle = new Bundle();
-                bundle.putString(CommonDialog.MESSAGE, "¿Desea eliminar la dependencia?");
+                bundle.putParcelable(Dependency.TAG, dependency);
                 bundle.putString(CommonDialog.TITLE, "Eliminar dependencia?");
-                bundle.putParcelable(Dependency.TAG, dependency);
-                bundle.putParcelable(Dependency.TAG, dependency);
-                Dialog dialog = CommonDialog.showConfirmDialog(bundle, getActivity(), presenter);
+                bundle.putInt(CommonDialog.TYPE, CommonDialog.DELETE_DIALOG);
+                bundle.putString(CommonDialog.MESSAGE, "¿Desea eliminar la dependencia?");
+                Dialog dialog = CommonDialog.showConfirmDialog(bundle, getActivity(), (CommonDialog.CommonDialogListener) presenter);
                 dialog.show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
-
 
     //COMUNICACION ENTRE CLASES MVPI
     /**
@@ -180,7 +195,6 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
     public void setPresenter(BasePresenter presenter) {
         this.presenter = (ListDependencyContract.Presenter) presenter;
     }
-
     /**
      * Este método es el que usa la vista para cargar los datos del repositorio
      * a través del esquema MVP
@@ -192,7 +206,16 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         adapter.clear();
         adapter.addAll(listDependencyInteractor);
     }
+    @Override
+    public void showMessage(String message) {
+        Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
+    }
+    @Override
+    public void showDeletedMessage() {
+        showMessage(getResources().getString(R.string.dependency_deleted));
+    }
 
+    //CICLO DE VIDA: FIN
     /**
      * Se llama cuando se elimina la unión Activity-Fragmnent cuando la Activity se elimine
      */
@@ -207,7 +230,7 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter = null;
+        presenter.onDestroy();
         adapter = null;
     }
 }

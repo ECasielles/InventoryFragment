@@ -6,7 +6,6 @@ import com.example.usuario.inventoryfragment.data.db.repository.DependencyReposi
 /**
  * Created by usuario on 27/11/17.
  */
-
 public class ListDependencyInteractorImpl implements ListDependencyInteractor {
 
     private final OnLoadFinishedListener listener;
@@ -18,6 +17,7 @@ public class ListDependencyInteractorImpl implements ListDependencyInteractor {
     @Override
     public void deleteDependency(Dependency dependency) {
         if(DependencyRepository.getInstance().deleteDependency(dependency))
+            //Falta mostrar mensaje cuando se haya eliminado
             listener.onSuccess(DependencyRepository.getInstance().getDependencies());
     }
 

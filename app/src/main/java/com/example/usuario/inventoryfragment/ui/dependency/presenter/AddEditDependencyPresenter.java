@@ -11,6 +11,7 @@ import com.example.usuario.inventoryfragment.ui.dependency.interactor.AddEditDep
 
 public class AddEditDependencyPresenter implements AddEditDependencyContract.Presenter,
         AddEditDependencyInteractor.OnAddEditFinishedListener {
+    public static final String TAG = "AddEditDependencyPresenter";
     private AddEditDependencyContract.View view;
     private AddEditDependencyInteractorImpl interactor;
 

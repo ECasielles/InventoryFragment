@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ListDependencyPresenter implements ListDependencyContract.Presenter,
         ListDependencyInteractor.OnLoadFinishedListener {
+    public static final String TAG = "ListDependencyPresenter";
     private ListDependencyContract.View view;
     private ListDependencyInteractorImpl interactor;
 
@@ -36,6 +37,8 @@ public class ListDependencyPresenter implements ListDependencyContract.Presenter
     @Override
     public void deleteItem(Dependency dependency) {
         interactor.deleteDependency(dependency);
+        loadDependencies();
+        view.showDeletedMessage();
     }
 
     /**

@@ -4,6 +4,7 @@ import com.example.usuario.inventoryfragment.data.db.model.Dependency;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Clase repositorio que genera los datos Dependency
@@ -111,23 +112,26 @@ public class DependencyRepository {
     }
 
     public void editDependency(Dependency dependency, String description) {
-        int index = dependencies.indexOf(dependency);
-        dependency.setDescription(description);
-        dependencies.set(index, dependency);
+        for (Dependency tempDependency : dependencies)
+            if(tempDependency.getName().equals(dependency.getName()))
+                dependency.setDescription(description);
     }
 
-    public boolean exists(String name, String shortname) {
-        boolean found = false;
-        for (int i = 0; i < dependencies.size() && !found; i++) {
-            if(dependencies.get(i).getName().equals(name) &&
-                    dependencies.get(i).getShortname().equals(shortname)) {
-                found = true;
+    //Recorrer con foreach si es sólo para lectura
+    public boolean exists(Dependency dependency) {
+        return dependencies.contains(dependency);
+    }
+    //public boolean deleteDependency(Dependency dependency) { return dependencies.remove(dependency) };
+    public void deleteDependency(int id) {
+        //No se puede eliminar el objeto directamente por lo que para eliminar
+        //de la colección NO PUEDO USAR FOREACH PORQUE LA RECORRE EN MODO LECTURA
+        //Foreach usa Iterator por lo que creamos el nuestro
+        //De esta forma recuperamos el puntero Iterator de la colección
+        Iterator<Dependency> iterator = dependencies.iterator();
+        while(iterator.hasNext())
+            if(iterator.next().get_ID() == id) {
+                iterator.remove();
+                break;
             }
-        }
-        return found;
-    }
-
-    public boolean deleteDependency(Dependency dependency) {
-        return dependencies.remove(dependency);
     }
 }

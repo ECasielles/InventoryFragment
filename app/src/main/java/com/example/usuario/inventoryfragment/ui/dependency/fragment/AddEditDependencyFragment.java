@@ -9,7 +9,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.example.usuario.inventoryfragment.R;
 import com.example.usuario.inventoryfragment.data.db.model.Dependency;
 import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.dependency.contract.AddEditDependencyContract;
+import com.example.usuario.inventoryfragment.ui.dependency.presenter.AddEditDependencyPresenter;
 import com.example.usuario.inventoryfragment.utils.AddEdit;
 
 
@@ -26,16 +26,18 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
 
     public static final String TAG = "AddEditDependencyFragment";
     private AddEditDependencyContract.Presenter presenter;
-    private AddEditDependencyListener mCallback;
+    private AddEditDependencyListener callback;
     private FloatingActionButton fab;
     private TextInputLayout tilName, tilShortName, tilDescription;
     private EditText edtName, edtShortName, edtDescription;
     private AddEdit addEditMode;
 
+    //INTERFAZ COMUNICACION CON ACTIVITY/FRAGMENT
     public interface AddEditDependencyListener {
         void listDependency();
     }
 
+    //CONSTRUCTOR
     public static AddEditDependencyFragment newInstance(Bundle arguments) {
         AddEditDependencyFragment addEditDependencyFragment = new AddEditDependencyFragment();
         if(arguments != null){
@@ -44,16 +46,16 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
         return addEditDependencyFragment;
     }
 
+    //CICLO DE VIDA: INICIO
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mCallback = (AddEditDependencyListener) activity;
+            callback = (AddEditDependencyListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().getLocalClassName() + " must implements ListDepedencyListener");
         }
     }
-
     @SuppressLint("LongLogTag")
     @Nullable
     @Override
@@ -154,15 +156,29 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
         });
     }
 
+    //GUARDAR ESTADO
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(AddEditDependencyPresenter.TAG, presenter);
+    }
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        this.presenter = (AddEditDependencyContract.Presenter) savedInstanceState.get(AddEditDependencyPresenter.TAG);
+    }
+
+    //COMUNICACION MVPI
     @Override
     public void setPresenter(BasePresenter presenter) {
         this.presenter = (AddEditDependencyContract.Presenter) presenter;
     }
     @Override
     public void navigateToListDependency() {
-        mCallback.listDependency();
+        callback.listDependency();
     }
 
+    //COMUNICACIONES MVPI: ERRORES
     @Override
     public void setNameEmptyError() {
         tilName.setError(getResources().getString(R.string.errorDependencyNameEmptyError));
@@ -182,5 +198,17 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
     @Override
     public void setValidateDependencyError() {
 
+    }
+
+    //CICLO DE VIDA: FIN
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
     }
 }

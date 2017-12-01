@@ -17,15 +17,17 @@ import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependen
 public class CommonDialog {
     public static final String MESSAGE = "message";
     public static final String TITLE = "title";
+    public static final int DELETE_DIALOG = 2;
+    public static final String TYPE = "type";
 
     /**
      * Cuadro de diálogo genérico que sirve para cualquier Fragment o Presenter.
      * @param bundle
      * @param context
-     * @param presenter
+     * @param listener
      * @return
      */
-    public static Dialog showConfirmDialog(final Bundle bundle, Context context, final ListDependencyContract.Presenter presenter){
+    public static Dialog showConfirmDialog(Bundle bundle, Context context, CommonDialogListener listener){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(bundle.getString(CommonDialog.MESSAGE))
                 .setTitle(bundle.getString(CommonDialog.TITLE))
@@ -33,7 +35,7 @@ public class CommonDialog {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //NOS PASAMOS POR EL FORRO EL MVPI
-                        presenter.deleteItem((Dependency) bundle.getParcelable(Dependency.TAG));
+                        listener.deleteItem((Dependency) bundle.getParcelable(Dependency.TAG));
                     }
                 })
                 .setNegativeButton(R.string.btnCancel, new DialogInterface.OnClickListener() {
@@ -46,4 +48,6 @@ public class CommonDialog {
         return builder.create();
     }
 
+    public interface CommonDialogListener {
+    }
 }
