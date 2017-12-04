@@ -16,6 +16,7 @@ public interface ListDependencyContract {
     interface View extends BaseView {
         void showDependency(List listDependencyInteractor);
         void showDeletedMessage();
+        void showMessage(String message);
     }
 
     interface Presenter extends BasePresenter, Serializable {

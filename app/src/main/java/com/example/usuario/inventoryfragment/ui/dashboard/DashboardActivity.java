@@ -1,6 +1,7 @@
 package com.example.usuario.inventoryfragment.ui.dashboard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayout;
@@ -9,9 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.example.usuario.inventoryfragment.ui.settings.AccountSettingsActivity;
-import com.example.usuario.inventoryfragment.ui.settings.GeneralSettingsActivity;
+import com.example.usuario.inventoryfragment.data.prefs.AppPreferencesHelper;
+import com.example.usuario.inventoryfragment.ui.inventory.InventoryApplication;
+import com.example.usuario.inventoryfragment.ui.prefs.AccountSettingsActivity;
+import com.example.usuario.inventoryfragment.ui.prefs.GeneralSettingsActivity;
 import com.example.usuario.inventoryfragment.ui.inventory.InventoryActivity;
 import com.example.usuario.inventoryfragment.R;
 import com.example.usuario.inventoryfragment.ui.dependency.DependencyActivity;
@@ -40,8 +44,19 @@ public class DashboardActivity extends AppCompatActivity {
             R.drawable.ic_format_indent_increase
     };
 
-    //Buscar una forma más elegante de hacerlo
-    HashMap<String, Integer> imgsId = new HashMap<>();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showAppPreferences();
+    }
+
+    private void showAppPreferences() {
+        AppPreferencesHelper appPreferencesHelper =
+                ((InventoryApplication) getApplicationContext()).getAppPreferencesHelper();
+        appPreferencesHelper.getCurrentUserName("Lolita");
+        String message = "Tu usuario de sesión es: " + appPreferencesHelper.getCurrentUserName();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
     //Especificando con LayoutParams: Fila, columna, espaciado y peso.
     @Override
@@ -155,4 +170,5 @@ public class DashboardActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

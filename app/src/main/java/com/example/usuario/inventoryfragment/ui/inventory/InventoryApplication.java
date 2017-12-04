@@ -1,32 +1,46 @@
 package com.example.usuario.inventoryfragment.ui.inventory;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.example.usuario.inventoryfragment.data.db.model.Dependency;
+import com.example.usuario.inventoryfragment.data.prefs.AppPreferencesHelper;
 
 import java.util.ArrayList;
 
 /**
- * Clase singleton (hereda de Application) que contiene los datos
+ * Clase singleton (hereda de Application) que contiene los datos.
+ * Inicializa la instancia de preferencias.
  *
  * @author Enrique Casielles
- * @version 1.0
+ * @version 2.0
  * @see android.app.Application
- * @see ArrayList
- * @see Dependency
+ * @see AppPreferencesHelper
  */
-//IMPORTANTE: Comprobar en el manifest que está name:.InventoryApplication
 public class InventoryApplication extends Application {
 
-    ArrayList<Dependency> dependencies;
+    public static final String PREF_NAME = "preferences";
+
+    private AppPreferencesHelper appPreferencesHelper;
+    private static InventoryApplication context;
 
     public InventoryApplication() {
-        dependencies = new ArrayList<>();
+        context = this;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        appPreferencesHelper = AppPreferencesHelper.getInstance();
+    }
+
+    public AppPreferencesHelper getAppPreferencesHelper() {
+        return appPreferencesHelper;
+    }
+
+    public static InventoryApplication getContext() {
+        return context;
     }
 
 }

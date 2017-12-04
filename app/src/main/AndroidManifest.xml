@@ -29,8 +29,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.usuario.inventoryfragment.ui.sector.SectorActivity"/>
-        <activity android:name="com.example.usuario.inventoryfragment.ui.settings.GeneralSettingsActivity"/>
-        <activity android:name="com.example.usuario.inventoryfragment.ui.settings.AccountSettingsActivity"/>
+        <activity android:name="com.example.usuario.inventoryfragment.ui.prefs.GeneralSettingsActivity"/>
+        <activity android:name="com.example.usuario.inventoryfragment.ui.prefs.AccountSettingsActivity"/>
         <activity android:name="com.example.usuario.inventoryfragment.ui.about.AboutActivity"/>
     </application>
 

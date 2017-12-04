@@ -173,6 +173,7 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
     public void setPresenter(BasePresenter presenter) {
         this.presenter = (AddEditDependencyContract.Presenter) presenter;
     }
+
     @Override
     public void navigateToListDependency() {
         callback.listDependency();
