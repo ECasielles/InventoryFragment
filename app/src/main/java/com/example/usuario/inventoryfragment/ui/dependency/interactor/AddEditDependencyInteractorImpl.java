@@ -9,9 +9,15 @@ import com.example.usuario.inventoryfragment.data.db.repository.DependencyReposi
 
 public class AddEditDependencyInteractorImpl implements AddEditDependencyInteractor {
 
+    OnAddEditFinishedListener listener;
+
+    public AddEditDependencyInteractorImpl(OnAddEditFinishedListener listener) {
+        this.listener = listener;
+    }
+
     //Aquí habría que controlarlo con excepciones en lugar de elseif
     @Override
-    public void validateDependency(String name, String shortname, String description, OnAddEditFinishedListener listener) {
+    public void validateDependency(String name, String shortname, String description) {
         if (name.isEmpty())
             listener.onNameEmptyError();
         else if (shortname.isEmpty())
@@ -31,7 +37,7 @@ public class AddEditDependencyInteractorImpl implements AddEditDependencyInterac
     }
 
     @Override
-    public void editDependency(Dependency dependency, String description, OnAddEditFinishedListener listener) {
+    public void editDependency(Dependency dependency, String description) {
         if(!description.isEmpty()) {
             DependencyRepository.getInstance().editDependency(dependency, description);
             listener.onSuccess(dependency.getName(), dependency.getShortname(), dependency.getDescription());

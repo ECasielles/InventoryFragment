@@ -24,10 +24,10 @@ public class CommonDialog {
      * Cuadro de diálogo genérico que sirve para cualquier Fragment o Presenter.
      * @param bundle
      * @param context
-     * @param listener
+     * @param presenter
      * @return
      */
-    public static Dialog showConfirmDialog(Bundle bundle, Context context, CommonDialogListener listener){
+    public static Dialog showConfirmDialog(final Bundle bundle, Context context, final ListDependencyContract.Presenter presenter){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(bundle.getString(CommonDialog.MESSAGE))
                 .setTitle(bundle.getString(CommonDialog.TITLE))
@@ -35,7 +35,7 @@ public class CommonDialog {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //NOS PASAMOS POR EL FORRO EL MVPI
-                        listener.deleteItem((Dependency) bundle.getParcelable(Dependency.TAG));
+                        presenter.deleteItem((Dependency) bundle.getParcelable(Dependency.TAG));
                     }
                 })
                 .setNegativeButton(R.string.btnCancel, new DialogInterface.OnClickListener() {

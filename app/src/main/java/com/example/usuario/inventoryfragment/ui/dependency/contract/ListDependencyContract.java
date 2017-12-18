@@ -6,6 +6,7 @@ import com.example.usuario.inventoryfragment.ui.base.BaseView;
 import com.example.usuario.inventoryfragment.ui.dependency.interactor.ListDependencyInteractor;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ public interface ListDependencyContract {
         void showDependency(List listDependencyInteractor);
         void showDeletedMessage();
         void showMessage(String message);
+
+        void deleteMultipleSelection(HashMap<Integer, Boolean> selection);
     }
 
     interface Presenter extends BasePresenter, Serializable {
@@ -26,6 +29,12 @@ public interface ListDependencyContract {
 
         @Override
         void onDestroy();
+
+        void setNewSelection(int position);
+        void removeSelection(int position);
+        void deleteSelection();
+        void clearSelection();
+        boolean getPositionChecked(int position);
     }
 
 }

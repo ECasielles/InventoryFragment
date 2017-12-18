@@ -16,9 +16,9 @@ public interface AddEditDependencyInteractor {
         void onSuccess(String name, String shortname, String description);
     }
 
-    void validateDependency(String name, String shortname, String description, OnAddEditFinishedListener listener);
+    void validateDependency(String name, String shortname, String description);
 
     void addDependency(String name, String shortname, String description);
 
-    void editDependency(Dependency dependency, String description, OnAddEditFinishedListener listener);
+    void editDependency(Dependency dependency, String description);
 }

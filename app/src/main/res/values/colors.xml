@@ -6,4 +6,5 @@
     <color name="colorGoogle">#e25f43</color>
     <color name="colorFacebook">#3b5998</color>
     <color name="colorPrimaryLogin">#FFFFFF</color>
+    <color name="colorTilError">#ff000d</color>
 </resources>

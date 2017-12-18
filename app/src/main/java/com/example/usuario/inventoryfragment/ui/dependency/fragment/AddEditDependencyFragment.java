@@ -165,7 +165,8 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        this.presenter = (AddEditDependencyContract.Presenter) savedInstanceState.get(AddEditDependencyPresenter.TAG);
+        if(savedInstanceState != null)
+            this.presenter = (AddEditDependencyContract.Presenter) savedInstanceState.get(AddEditDependencyPresenter.TAG);
     }
 
     //COMUNICACION MVPI

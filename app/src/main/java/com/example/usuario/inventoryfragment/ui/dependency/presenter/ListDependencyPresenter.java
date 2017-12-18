@@ -1,12 +1,11 @@
 package com.example.usuario.inventoryfragment.ui.dependency.presenter;
 
-import android.os.Bundle;
-
 import com.example.usuario.inventoryfragment.data.db.model.Dependency;
 import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependencyContract;
 import com.example.usuario.inventoryfragment.ui.dependency.interactor.ListDependencyInteractor;
 import com.example.usuario.inventoryfragment.ui.dependency.interactor.ListDependencyInteractorImpl;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -49,6 +48,37 @@ public class ListDependencyPresenter implements ListDependencyContract.Presenter
     @Override
     public void onSuccess(List<Dependency> dependencies) {
         view.showDependency(dependencies);
+    }
+
+    //COMUNICACION CON MENU SELECCION MULTIPLE
+    HashMap<Integer, Boolean> selection = new HashMap<>();
+    @Override
+    public void setNewSelection(int position) {
+        selection.put(position, true);
+    }
+    @Override
+    public void removeSelection(int position) {
+        selection.remove(position);
+    }
+    @Override
+    public void clearSelection() {
+        selection.clear();
+    }
+    /**
+     * Elimina los elementos seleccionados
+     */
+    @Override
+    public void deleteSelection() {
+        view.deleteMultipleSelection(selection);
+    }
+    /**
+     * Comprueba si el elemento existe en la selección múltiple.
+     * @param position
+     * @return
+     */
+    @Override
+    public boolean getPositionChecked(int position) {
+        return selection.containsKey(position);
     }
 
     /**

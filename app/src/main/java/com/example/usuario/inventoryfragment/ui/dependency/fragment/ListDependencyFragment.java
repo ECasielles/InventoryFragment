@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
@@ -14,17 +15,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.example.usuario.inventoryfragment.R;
 import com.example.usuario.inventoryfragment.adapter.DependencyAdapter;
 import com.example.usuario.inventoryfragment.data.db.model.Dependency;
-import com.example.usuario.inventoryfragment.ui.base.BaseActivity;
 import com.example.usuario.inventoryfragment.ui.base.BasePresenter;
 import com.example.usuario.inventoryfragment.ui.base.BaseView;
+import com.example.usuario.inventoryfragment.ui.dependency.DependencyMultichoiceModeListener;
 import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependencyContract;
 import com.example.usuario.inventoryfragment.ui.dependency.presenter.ListDependencyPresenter;
 import com.example.usuario.inventoryfragment.utils.CommonDialog;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ListDependencyFragment extends ListFragment implements BaseView, ListDependencyContract.View {
@@ -96,10 +99,12 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
 
         //Le asignamos un menú contextual a la lista (viewGroup)
         //Hay que hacerlo aquí porque antes no está creada la vista
-        registerForContextMenu(getListView());
+        //Comentado porque usamos pulsación multichoice.
+        //registerForContextMenu(getListView());
 
         //IMPORTANTE: CAE SEGURO
-        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /**
              * @param adapterView Lista que hereda de AdapterView
              * @param view Vista que contiene el layout elemento
@@ -108,14 +113,14 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
              * @return
              */
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Parcelable parcel = (Parcelable) adapterView.getItemAtPosition(position);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Dependency.TAG, parcel);
                 callback.addNewDependency(bundle);
-                return false;
             }
         });
+
 
         //Si el fab se encontrara en el xml de la Activity
         //FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
@@ -125,6 +130,19 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
                 callback.addNewDependency(null);
             }
         });
+
+        //Actiar el modo MULTICHOICE en la lista
+        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        getListView().setMultiChoiceModeListener(new DependencyMultichoiceModeListener(presenter));
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                getListView().setItemChecked(position, !presenter.getPositionChecked(position));
+                return true;
+            }
+        });
+
+
     }
 
     //GUARDAR EL ESTADO
@@ -142,7 +160,8 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         super.onViewStateRestored(savedInstanceState);
         //Podría hacer que esta vista cree el Presenter y que no lo maneje la Activity
         //Se podría recuperarlo también en el onCreateView
-        this.presenter = (ListDependencyContract.Presenter) savedInstanceState.get(ListDependencyPresenter.TAG);
+        if(savedInstanceState != null)
+            this.presenter = (ListDependencyContract.Presenter) savedInstanceState.get(ListDependencyPresenter.TAG);
     }
 
     //MENU CONTEXTUAL
@@ -157,7 +176,7 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         super.onCreateContextMenu(menu, v, menuInfo);
         //Aquí se le declaran elementos al menú, como el título
         menu.setHeaderTitle(R.string.listDependencyFragmentContextTitle);
-        getActivity().getMenuInflater().inflate(R.menu.menu_fragment_list_dependency, menu);
+        getActivity().getMenuInflater().inflate(R.menu.menu_fragment_list_dependency_delete, menu);
     }
     /**
      * Implementa las diferentes acciones de las opciones del menú contextual
@@ -178,7 +197,7 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
                 bundle.putString(CommonDialog.TITLE, "Eliminar dependencia?");
                 bundle.putInt(CommonDialog.TYPE, CommonDialog.DELETE_DIALOG);
                 bundle.putString(CommonDialog.MESSAGE, "¿Desea eliminar la dependencia?");
-                Dialog dialog = CommonDialog.showConfirmDialog(bundle, getActivity(), (CommonDialog.CommonDialogListener) presenter);
+                Dialog dialog = CommonDialog.showConfirmDialog(bundle, getActivity(), presenter);
                 dialog.show();
                 return true;
             default:
@@ -210,6 +229,16 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
     public void showMessage(String message) {
         Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
     }
+
+    //Elimina métodos vía selección múltiple
+    //Comprobar si es posible hacerlo directamente desde el presenter
+    @Override
+    public void deleteMultipleSelection(HashMap<Integer, Boolean> selection) {
+
+        for (Integer position: selection.keySet())
+            presenter.deleteItem((Dependency) getListView().getItemAtPosition(position));
+    }
+
     @Override
     public void showDeletedMessage() {
         showMessage(getResources().getString(R.string.dependency_deleted));

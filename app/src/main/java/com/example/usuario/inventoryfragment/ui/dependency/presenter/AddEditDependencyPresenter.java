@@ -18,17 +18,17 @@ public class AddEditDependencyPresenter implements AddEditDependencyContract.Pre
 
     public AddEditDependencyPresenter(AddEditDependencyContract.View view) {
         this.view = view;
-        this.interactor = new AddEditDependencyInteractorImpl();
+        this.interactor = new AddEditDependencyInteractorImpl(this);
     }
 
     @Override
     public void saveDependency(String name, String shortname, String description) {
-        interactor.validateDependency(name, shortname, description, this);
+        interactor.validateDependency(name, shortname, description);
     }
 
     @Override
     public void editDependency(Dependency dependency, String description) {
-        interactor.editDependency(dependency, description, this);
+        interactor.editDependency(dependency, description);
     }
 
     @Override

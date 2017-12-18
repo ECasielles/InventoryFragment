@@ -122,16 +122,27 @@ public class DependencyRepository {
         return dependencies.contains(dependency);
     }
     //public boolean deleteDependency(Dependency dependency) { return dependencies.remove(dependency) };
-    public void deleteDependency(int id) {
+    public boolean deleteDependency(Dependency dependency) {
         //No se puede eliminar el objeto directamente por lo que para eliminar
         //de la colección NO PUEDO USAR FOREACH PORQUE LA RECORRE EN MODO LECTURA
         //Foreach usa Iterator por lo que creamos el nuestro
         //De esta forma recuperamos el puntero Iterator de la colección
         Iterator<Dependency> iterator = dependencies.iterator();
         while(iterator.hasNext())
-            if(iterator.next().get_ID() == id) {
+            if(iterator.next().getName().equals(dependency.getName())) {
                 iterator.remove();
                 break;
             }
+        return false;
+    }
+
+    public boolean exists(String name, String shortname) {
+        Iterator<Dependency> iterator = dependencies.iterator();
+        while(iterator.hasNext())
+            if(iterator.next().getName().equals(name)) {
+                iterator.remove();
+                break;
+            }
+        return false;
     }
 }
