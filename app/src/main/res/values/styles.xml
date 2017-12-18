@@ -39,4 +39,8 @@
         <item name="colorControlActivated">@android:color/darker_gray</item>
     </style>
 
+    <style name="Custom.TextInputLayout" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColor">@style/TextAppearance.Design.Error</item>
+    </style>
+
 </resources>
