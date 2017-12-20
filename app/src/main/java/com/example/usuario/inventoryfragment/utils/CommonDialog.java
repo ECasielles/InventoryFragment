@@ -35,7 +35,7 @@ public class CommonDialog {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //NOS PASAMOS POR EL FORRO EL MVPI
-                        presenter.deleteItem((Dependency) bundle.getParcelable(Dependency.TAG));
+                        presenter.deleteDependency((Dependency) bundle.getParcelable(Dependency.TAG));
                     }
                 })
                 .setNegativeButton(R.string.btnCancel, new DialogInterface.OnClickListener() {

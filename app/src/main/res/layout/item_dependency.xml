@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:attr/activatedBackgroundIndicator"
     >
+    <!--El atributo background del elemento raíz resalta la selección-->
+
     <!--
     Importando MaterialLetterIcon de
     https://github.com/IvBaranov/MaterialLetterIcon

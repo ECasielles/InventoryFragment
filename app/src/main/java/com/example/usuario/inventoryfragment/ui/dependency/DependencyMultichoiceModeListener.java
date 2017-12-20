@@ -14,9 +14,9 @@ import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependen
  * Created by usuario on 18/12/17.
  */
 public class DependencyMultichoiceModeListener implements AbsListView.MultiChoiceModeListener {
+    private static final String TAG = "DependencyMultichoiceModeListener";
 
     //Podríamos tener un Presenter sólo para multiselección.
-
     private ListDependencyContract.Presenter presenter;
     private int count;
 
@@ -30,10 +30,12 @@ public class DependencyMultichoiceModeListener implements AbsListView.MultiChoic
             count++;
             presenter.setNewSelection(position);
         } else {
-            count--;
-            presenter.removeSelection(position);
+            if(count > 0) {
+                count--;
+                presenter.removeSelection(position);
+            }
         }
-        actionMode.setTitle(count + "seleccionados");
+        actionMode.setTitle(count + " seleccionados");
     }
     /**
      * Cuando se realiza una pulsación larga sobre el primer elemento.
@@ -59,6 +61,7 @@ public class DependencyMultichoiceModeListener implements AbsListView.MultiChoic
         switch (menuItem.getItemId()) {
             case R.id.action_fragment_listdependency_delete:
                 presenter.deleteSelection();
+                presenter.loadDependencies();
                 break;
         }
         //Finaliza el menú de selección
@@ -70,4 +73,5 @@ public class DependencyMultichoiceModeListener implements AbsListView.MultiChoic
         count = 0;
         presenter.clearSelection();
     }
+
 }

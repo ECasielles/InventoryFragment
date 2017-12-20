@@ -34,9 +34,8 @@ public class ListDependencyPresenter implements ListDependencyContract.Presenter
     }
 
     @Override
-    public void deleteItem(Dependency dependency) {
+    public void deleteDependency(Dependency dependency) {
         interactor.deleteDependency(dependency);
-        loadDependencies();
         view.showDeletedMessage();
     }
 
@@ -69,7 +68,8 @@ public class ListDependencyPresenter implements ListDependencyContract.Presenter
      */
     @Override
     public void deleteSelection() {
-        view.deleteMultipleSelection(selection);
+        for (Integer position: selection.keySet())
+            deleteDependency(view.getDependency(position));
     }
     /**
      * Comprueba si el elemento existe en la selección múltiple.

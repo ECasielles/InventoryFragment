@@ -5,10 +5,10 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,7 +27,6 @@ import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependen
 import com.example.usuario.inventoryfragment.ui.dependency.presenter.ListDependencyPresenter;
 import com.example.usuario.inventoryfragment.utils.CommonDialog;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class ListDependencyFragment extends ListFragment implements BaseView, ListDependencyContract.View {
@@ -102,8 +101,6 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         //Comentado porque usamos pulsación multichoice.
         //registerForContextMenu(getListView());
 
-        //IMPORTANTE: CAE SEGURO
-
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /**
              * @param adapterView Lista que hereda de AdapterView
@@ -127,22 +124,21 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
                 callback.addNewDependency(null);
             }
         });
 
         //Actiar el modo MULTICHOICE en la lista
-        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         getListView().setMultiChoiceModeListener(new DependencyMultichoiceModeListener(presenter));
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
                 getListView().setItemChecked(position, !presenter.getPositionChecked(position));
                 return true;
-            }
+           }
         });
-
-
     }
 
     //GUARDAR EL ESTADO
@@ -229,14 +225,11 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
     public void showMessage(String message) {
         Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
     }
-
     //Elimina métodos vía selección múltiple
     //Comprobar si es posible hacerlo directamente desde el presenter
     @Override
-    public void deleteMultipleSelection(HashMap<Integer, Boolean> selection) {
-
-        for (Integer position: selection.keySet())
-            presenter.deleteItem((Dependency) getListView().getItemAtPosition(position));
+    public Dependency getDependency(int position) {
+        return (Dependency) getListView().getItemAtPosition(position);
     }
 
     @Override
