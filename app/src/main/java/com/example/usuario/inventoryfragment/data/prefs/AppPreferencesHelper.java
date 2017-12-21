@@ -2,8 +2,10 @@ package com.example.usuario.inventoryfragment.data.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.usuario.inventoryfragment.ui.inventory.InventoryApplication;
+import com.example.usuario.inventoryfragment.ui.prefs.GeneralSettingsActivity;
 import com.example.usuario.inventoryfragment.utils.AppConstants;
 
 /**
@@ -11,6 +13,7 @@ import com.example.usuario.inventoryfragment.utils.AppConstants;
  */
 
 public class AppPreferencesHelper implements AccountPreferencesHelper, GeneralPreferencesHelper {
+    private static final String TAG = "AppPreferencesHelper";
 
     /**
      * 1.- Se definen todas las claves posibles de los fichero preferencias (ver interfaces)
@@ -21,11 +24,23 @@ public class AppPreferencesHelper implements AccountPreferencesHelper, GeneralPr
      */
     private final SharedPreferences preferences;
     private static AppPreferencesHelper helper;
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+
+    //TODO: Plantear arquitectura de clases. ¿Quién va a usar esta clase?
+    public interface AppPreferencesListener {
+        void onSharedPreferencesListener();
+    }
+
 
     private AppPreferencesHelper() {
         //Si es el fichero por defecto de las preferencias
-
         preferences = InventoryApplication.getContext().getSharedPreferences(InventoryApplication.PREF_NAME, Context.MODE_PRIVATE);
+        prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                Log.i(TAG, "onSharedPreferenceChanged: Se ha cambiado la clave: " + key);
+            }
+        };
     }
 
     /**

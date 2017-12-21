@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Clase Adapter que maneja secciones o armarios de productos.
  *
  * @author Enrique Casielles Lapeira
- * @version 1.0
+ * @version 2.0
  * @see ArrayList
  * @see Sector
  * @see SectorRepository
@@ -34,27 +34,40 @@ public class SectorAdapter extends RecyclerView.Adapter<SectorAdapter.SectorView
     private ArrayList<Sector> modifiedSectors;
     private OnSwitchCheckedChangedListener onSwitchCheckedChangedListener = new OnSwitchCheckedChangedListener();
 
+    //Para hacer clic a un elemento del recycler
+    private OnItemClickListener onItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Sector sector);
+    }
+
     /**
      * Constructor de SectorAdapter. Inicializa el array desde SectorRepository.
      * Se llama cuando SectorActivity se ejecute por primera vez.
      */
-    public SectorAdapter() {
+    public SectorAdapter(OnItemClickListener onItemClickListener) {
         sectors = SectorRepository.getInstance().getSectors();
         this.modifiedSectors = new ArrayList<>();
+        this.onItemClickListener = onItemClickListener;
     }
+
     /**
      * Constructor de SectorAdapter. Inicializa el array desde SectorRepository.
      * Se llama cuando SectorActivity se haya recreado desde un cambio de configuración,
      * habiendo salvado su estado dinámico.
+     *
      * @param modifiedSectors ArrayList de objetos Parcelable
      */
-    public SectorAdapter(ArrayList<Sector> modifiedSectors) {
-        sectors =
-        this.modifiedSectors = new ArrayList<>();
+    public SectorAdapter(OnItemClickListener onItemClickListener, ArrayList<Sector> modifiedSectors) {
+        sectors = SectorRepository.getInstance().getSectors();
+        this.modifiedSectors = modifiedSectors;
+        this.onItemClickListener = onItemClickListener;
     }
+
 
     /**
      * Infla la vista y crea en memoria el objeto ViewHolder.
+     *
      * @param parent
      * @param viewType
      * @return
@@ -72,6 +85,7 @@ public class SectorAdapter extends RecyclerView.Adapter<SectorAdapter.SectorView
 
     /**
      * Vincula los elementos del ViewHolder a la lista ArrayList y los inicializa
+     *
      * @param sectorViewHolder
      * @param position
      */
@@ -83,13 +97,16 @@ public class SectorAdapter extends RecyclerView.Adapter<SectorAdapter.SectorView
         sectorViewHolder.txvName.setText(sectors.get(position).getShortname());
         sectorViewHolder.swtEnabled.setOnCheckedChangeListener(onSwitchCheckedChangedListener);
 
-        if(sectors.get(position).isDefault())
+        if (sectors.get(position).isDefault())
             sectorViewHolder.txvSectorDefault.setText(R.string.txvSectorDefault);
+
+        sectorViewHolder.bind(sectors.get(position), onItemClickListener);
     }
 
     /**
      * Se crearán tantos elementos SectorViewHolder como elementos haya en
      * el ArrayList definido dentro de la clase
+     *
      * @return Cantidad de elementos del array sectors
      */
     @Override
@@ -101,6 +118,7 @@ public class SectorAdapter extends RecyclerView.Adapter<SectorAdapter.SectorView
      * Devuelve el array de los sectores que el usuario ha modificado
      * cuando la activity estaba visible y que aún no se ha guardado en
      * la base de datos (persistente).     *
+     *
      * @return ArrayList de sectores modificados.
      */
     public ArrayList<Sector> getModifiedSectors() {
@@ -121,21 +139,28 @@ public class SectorAdapter extends RecyclerView.Adapter<SectorAdapter.SectorView
 
         public SectorViewHolder(View itemView) {
             super(itemView);
-            swtEnabled = (Switch) itemView.findViewById(R.id.swtSector);
-            txvName = (TextView) itemView.findViewById(R.id.txvSectorName);
-            txvSectorDefault = (TextView) itemView.findViewById(R.id.txvSectorDefault);
+            swtEnabled = itemView.findViewById(R.id.swtSector);
+            txvName = itemView.findViewById(R.id.txvSectorName);
+            txvSectorDefault = itemView.findViewById(R.id.txvSectorDefault);
+        }
+
+        public void bind(final Sector sector, final OnItemClickListener onItemClickListener) {
+            //itemView es el elemento interno del Holder
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClickListener.onItemClick(sector);
+                }
+            });
         }
     }
 
-
-    private class OnSwitchCheckedChangedListener implements CompoundButton.OnCheckedChangeListener{
+    //ARREGLAR PARA GUARDAR EL ESTADO DINAMICO
+    private class OnSwitchCheckedChangedListener implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            /////ARREGLAR/////
-            /*Sector tempSector = (Sector) buttonView.getTag();
-            tempSector.setEnabled(isChecked);
-            modifiedSectors.add(tempSector);*/
         }
     }
+
+
 }

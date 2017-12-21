@@ -15,6 +15,7 @@ import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependen
  */
 public class DependencyMultichoiceModeListener implements AbsListView.MultiChoiceModeListener {
     private static final String TAG = "DependencyMultichoiceModeListener";
+    private ActionMode actionMode = null;
 
     //Podríamos tener un Presenter sólo para multiselección.
     private ListDependencyContract.Presenter presenter;
@@ -49,6 +50,7 @@ public class DependencyMultichoiceModeListener implements AbsListView.MultiChoic
         //ActionMode no entra en el examen
         MenuInflater inflater = actionMode.getMenuInflater();
         inflater.inflate(R.menu.menu_fragment_list_dependency_delete, menu);
+        this.actionMode = actionMode;
         //True significa que debe ejecutarlo
         return true;
     }
@@ -72,6 +74,10 @@ public class DependencyMultichoiceModeListener implements AbsListView.MultiChoic
     public void onDestroyActionMode(ActionMode actionMode) {
         count = 0;
         presenter.clearSelection();
+    }
+
+    public void cancel(){
+        actionMode.finish();
     }
 
 }

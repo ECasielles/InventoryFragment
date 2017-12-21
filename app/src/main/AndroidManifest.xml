@@ -28,7 +28,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.example.usuario.inventoryfragment.ui.sector.SectorActivity"/>
+        <activity android:name="com.example.usuario.inventoryfragment.ui.sector.SectorActivity">
+        </activity>
         <activity android:name="com.example.usuario.inventoryfragment.ui.prefs.GeneralSettingsActivity"/>
         <activity android:name="com.example.usuario.inventoryfragment.ui.prefs.AccountSettingsActivity"/>
         <activity android:name="com.example.usuario.inventoryfragment.ui.about.AboutActivity"/>

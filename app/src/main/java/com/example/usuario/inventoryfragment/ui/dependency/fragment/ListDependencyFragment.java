@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
     private ListDependencyListener callback;
     private DependencyAdapter adapter;
     FloatingActionButton fab;
+
 
     //INTERFAZ COMUNICACION CON LA ACTIVITY
     public interface ListDependencyListener {
@@ -100,6 +102,7 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         //Hay que hacerlo aquí porque antes no está creada la vista
         //Comentado porque usamos pulsación multichoice.
         //registerForContextMenu(getListView());
+        final DependencyMultichoiceModeListener listener = new DependencyMultichoiceModeListener(presenter);
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /**
@@ -124,14 +127,16 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
+                //Buscar cómo hacerlo con finish
+                //getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
+                listener.cancel();
                 callback.addNewDependency(null);
             }
         });
 
         //Actiar el modo MULTICHOICE en la lista
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        getListView().setMultiChoiceModeListener(new DependencyMultichoiceModeListener(presenter));
+        getListView().setMultiChoiceModeListener(listener);
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {

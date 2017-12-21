@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.Toast;
 
 import com.example.usuario.inventoryfragment.R;
 import com.example.usuario.inventoryfragment.adapter.SectorAdapter;
@@ -16,7 +17,7 @@ import com.example.usuario.inventoryfragment.data.db.model.Sector;
  * Actividad que maneja el alta de secciones
  *
  * @author Enrique Casielles Lapeira
- * @version 1.0
+ * @version 2.0
  * @see android.app.Activity
  * @see AppCompatActivity
  */
@@ -24,22 +25,32 @@ public class SectorActivity extends AppCompatActivity {
 
     private RecyclerView recyclerSector;
     private SectorAdapter sectorAdapter;
+    //Si quiero que el listener sea multipropósito
+    //en vez de inicializarlo anónimamente, le creo una clase
+    //private SectorListener listener;
+    private SectorAdapter.OnItemClickListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sector);
-        recyclerSector = (RecyclerView) findViewById(R.id.rvwSector);
+        recyclerSector = findViewById(R.id.rvwSector);
         recyclerSector.setHasFixedSize(true);
         recyclerSector.setLayoutManager(new LinearLayoutManager(this));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        listener = new SectorAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Sector sector) {
+                Toast.makeText(SectorActivity.this, "SectorItemClick: " + sector.getName(), Toast.LENGTH_SHORT).show();
+            }
+        };
 
         if(savedInstanceState != null)
-            sectorAdapter = new SectorAdapter(savedInstanceState.<Sector>getParcelableArrayList("sector"));
+            sectorAdapter = new SectorAdapter(listener, savedInstanceState.<Sector>getParcelableArrayList("sector"));
         else
-            sectorAdapter = new SectorAdapter();
+            sectorAdapter = new SectorAdapter(listener);
 
         recyclerSector.setAdapter(sectorAdapter);
     }
@@ -62,5 +73,15 @@ public class SectorActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("sector", sectorAdapter.getModifiedSectors());
     }
+
+    /*
+    //OPCION MULTIPROPOSITO
+    class SectorListener implements SectorAdapter.OnItemClickListener, SectorAdapter.OnItemLongClickListener {
+        @Override
+        public void onItemClick(Sector sector) {
+            Toast.makeText(SectorActivity.this, "SectorItemClick: " + sector.getName(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    */
 
 }

@@ -41,7 +41,9 @@
         app:layout_constraintStart_toEndOf="@+id/mliIcon"
         app:layout_constraintTop_toTopOf="@+id/mliIcon"
         tools:text="TextView"
+        android:fontFamily="@font/beleren_bold"
         />
+        <!---->
 
     <TextView
         android:id="@+id/txvElementShortName"

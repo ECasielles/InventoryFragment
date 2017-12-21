@@ -58,8 +58,8 @@
         <item name="actionModeBackground">@color/background_action_mode</item>
         <item name="android:background">?android:attr/actionModeBackground</item>
         <item name="android:actionModeBackground">@color/background_action_mode</item>
-        <item name="titleTextStyle">@style/TextAppearance.AppCompat.Title</item>
-        <item name="android:titleTextStyle">@style/TextAppearance.AppCompat.Title</item>
+        <item name="titleTextStyle">@style/TextAppearance.AppCompat.Title.Inverse</item>
+        <item name="android:titleTextStyle">@style/TextAppearance.AppCompat.Title.Inverse</item>
     </style>
 
 

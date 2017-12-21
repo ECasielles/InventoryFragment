@@ -1,6 +1,7 @@
 package com.example.usuario.inventoryfragment.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -68,6 +69,9 @@ public class DependencyAdapter extends ArrayAdapter<Dependency>{
         dependencyHolder.mliIcon.setLetter(getItem(position).getShortname().substring(0, 1));
         dependencyHolder.txvName.setText(getItem(position).getName());
         dependencyHolder.txvShortName.setText(getItem(position).getShortname());
+        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "font/Beleren-Bold.ttf");
+        dependencyHolder.txvShortName.setTypeface(typeface);
+        //dependencyHolder.txvName.setTypeface(Typeface.defaultFromStyle(R.font.beleren_bold));
         return rootView;
     }
 
