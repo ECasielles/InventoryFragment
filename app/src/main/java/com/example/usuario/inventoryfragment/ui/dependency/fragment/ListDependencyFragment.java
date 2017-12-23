@@ -8,8 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
-import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,7 +34,8 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
     private ListDependencyContract.Presenter presenter;
     private ListDependencyListener callback;
     private DependencyAdapter adapter;
-    FloatingActionButton fab;
+    private DependencyMultichoiceModeListener multichoiceModeListener;
+    private FloatingActionButton fab;
 
 
     //INTERFAZ COMUNICACION CON LA ACTIVITY
@@ -102,7 +101,18 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
         //Hay que hacerlo aquí porque antes no está creada la vista
         //Comentado porque usamos pulsación multichoice.
         //registerForContextMenu(getListView());
-        final DependencyMultichoiceModeListener listener = new DependencyMultichoiceModeListener(presenter);
+        multichoiceModeListener = new DependencyMultichoiceModeListener(presenter);
+
+        //Activar el modo MULTICHOICE en la lista
+        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        getListView().setMultiChoiceModeListener(multichoiceModeListener);
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                getListView().setItemChecked(position, !presenter.getPositionChecked(position));
+                return true;
+            }
+        });
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /**
@@ -121,7 +131,6 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
             }
         });
 
-
         //Si el fab se encontrara en el xml de la Activity
         //FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -129,21 +138,11 @@ public class ListDependencyFragment extends ListFragment implements BaseView, Li
             public void onClick(View view) {
                 //Buscar cómo hacerlo con finish
                 //getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
-                listener.cancel();
+                multichoiceModeListener.cancel();
                 callback.addNewDependency(null);
             }
         });
 
-        //Actiar el modo MULTICHOICE en la lista
-        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        getListView().setMultiChoiceModeListener(listener);
-        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                getListView().setItemChecked(position, !presenter.getPositionChecked(position));
-                return true;
-           }
-        });
     }
 
     //GUARDAR EL ESTADO

@@ -76,8 +76,8 @@ public class DependencyMultichoiceModeListener implements AbsListView.MultiChoic
         presenter.clearSelection();
     }
 
-    public void cancel(){
-        actionMode.finish();
+    public void cancel() {
+        if(actionMode != null) actionMode.finish();
     }
 
 }
