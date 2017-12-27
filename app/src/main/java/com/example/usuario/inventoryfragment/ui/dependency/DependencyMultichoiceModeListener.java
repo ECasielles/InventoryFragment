@@ -11,7 +11,12 @@ import com.example.usuario.inventoryfragment.ui.dependency.contract.ListDependen
 
 
 /**
- * Created by usuario on 18/12/17.
+ * Clase que maneja la multiselección de la lista de dependencias.
+ *
+ * @author Enrique Casielles Lapeira
+ * @version 1.0
+ * @see android.widget.AbsListView.MultiChoiceModeListener
+ * @see ListDependencyContract.Presenter
  */
 public class DependencyMultichoiceModeListener implements AbsListView.MultiChoiceModeListener {
     private static final String TAG = "DependencyMultichoiceModeListener";
